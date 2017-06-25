@@ -31,10 +31,7 @@ dependencies {
 }
 
 repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    jcenter()
 }
 
 task wrapper(type: Wrapper) {
