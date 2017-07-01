@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":overlap2d-runtime-libgdx" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/../darkphobia" external.system.id="GRADLE" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="java-gradle" name="Java-Gradle">
       <configuration>
-        <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" />
+        <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/../darkphobia/overlap2d-runtime-libgdx/build" />
         <option name="BUILDABLE" value="true" />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
-    <output url="file://$MODULE_DIR$/build/classes/main" />
-    <output-test url="file://$MODULE_DIR$/build/classes/test" />
+    <output url="file://$MODULE_DIR$/../darkphobia/overlap2d-runtime-libgdx/build/classes/main" />
+    <output-test url="file://$MODULE_DIR$/../darkphobia/overlap2d-runtime-libgdx/build/classes/test" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/.gradle" />
-      <excludeFolder url="file://$MODULE_DIR$/build" />
+    <content url="file://$MODULE_DIR$/../darkphobia/overlap2d-runtime-libgdx">
+      <excludeFolder url="file://$MODULE_DIR$/../darkphobia/overlap2d-runtime-libgdx/.gradle" />
     </content>
-    <content url="file://$MODULE_DIR$/../../overlap2d-runtime-libgdx/src">
-      <sourceFolder url="file://$MODULE_DIR$/../../overlap2d-runtime-libgdx/src" isTestSource="false" />
+    <content url="file://$MODULE_DIR$/src">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <content url="file://$MODULE_DIR$/../../overlap2d-runtime-libgdx/src/main/resources">
-      <sourceFolder url="file://$MODULE_DIR$/../../overlap2d-runtime-libgdx/src/main/resources" type="java-resource" />
+    <content url="file://$MODULE_DIR$/src/main/resources">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
     </content>
-    <content url="file://$MODULE_DIR$/../../overlap2d-runtime-libgdx/src/test/java">
-      <sourceFolder url="file://$MODULE_DIR$/../../overlap2d-runtime-libgdx/src/test/java" isTestSource="true" />
+    <content url="file://$MODULE_DIR$/src/test/java">
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
     </content>
-    <content url="file://$MODULE_DIR$/../../overlap2d-runtime-libgdx/src/test/resources">
-      <sourceFolder url="file://$MODULE_DIR$/../../overlap2d-runtime-libgdx/src/test/resources" type="java-test-resource" />
+    <content url="file://$MODULE_DIR$/src/test/resources">
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
