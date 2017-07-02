@@ -133,6 +133,9 @@ public class SceneLoader {
 		pixelsPerWU = rm.getProjectVO().pixelToWorld;
 
 		sceneVO = rm.getSceneVO(sceneName);
+		if (sceneVO == null) {
+			throw new IllegalStateException("Loaded scene for scene name " + sceneName + " is null");
+		}
         world.setGravity(new Vector2(sceneVO.physicsPropertiesVO.gravityX, sceneVO.physicsPropertiesVO.gravityY));
 
 		if(sceneVO.composite == null) {
