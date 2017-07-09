@@ -24,6 +24,7 @@ import com.uwsoft.editor.renderer.components.MainItemComponent;
 import com.uwsoft.editor.renderer.components.NodeComponent;
 import com.uwsoft.editor.renderer.components.ParentNodeComponent;
 import com.uwsoft.editor.renderer.components.ScriptComponent;
+import com.uwsoft.editor.renderer.exception.NullEntityException;
 import com.uwsoft.editor.renderer.scripts.IScript;
 
 import java.util.HashMap;
@@ -86,6 +87,8 @@ public class ItemWrapper {
     }
 
     public IScript addScript(IScript script) {
+        if (entity == null) throw new NullEntityException("Entity for script " + script.getClass() + " was null.");
+
         ScriptComponent component = ComponentRetriever.get(entity, ScriptComponent.class);
         if(component == null) {
             component = new ScriptComponent();
