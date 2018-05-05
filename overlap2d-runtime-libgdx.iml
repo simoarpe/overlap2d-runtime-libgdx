@@ -7,6 +7,11 @@
         <option name="BUILDABLE" value="true" />
       </configuration>
     </facet>
+    <facet type="android-gradle" name="Android-Gradle">
+      <configuration>
+        <option name="GRADLE_PROJECT_PATH" value=":overlap2d-runtime-libgdx" />
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
     <output url="file://$MODULE_DIR$/build/classes/main" />
@@ -18,14 +23,14 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="box2dLights" exported="" />
-    <orderEntry type="library" exported="" name="gdx-1.9.3" level="project" />
-    <orderEntry type="library" exported="" name="gdx-box2d-1.9.3" level="project" />
-    <orderEntry type="library" exported="" name="gdx-freetype-1.9.3" level="project" />
-    <orderEntry type="library" exported="" name="ashley-1.7.0" level="project" />
-    <orderEntry type="library" exported="" name="overlap2d-runtime-libgdx.overlap2d-runtime-libgdx-0.1.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-1.9.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-box2d-1.9.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-freetype-1.9.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: ashley-1.7.0" level="project" />
   </component>
 </module>
