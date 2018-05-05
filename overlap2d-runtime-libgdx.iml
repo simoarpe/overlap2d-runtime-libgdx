@@ -32,5 +32,9 @@
     <orderEntry type="library" exported="" name="Gradle: gdx-box2d-1.9.3" level="project" />
     <orderEntry type="library" exported="" name="Gradle: gdx-freetype-1.9.3" level="project" />
     <orderEntry type="library" exported="" name="Gradle: ashley-1.7.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: overlap2d-runtime-libgdx.overlap2d-runtime-libgdx-0.1.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: overlap2d-runtime-libgdx.overlap2d-runtime-libgdx-0.1.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: overlap2d-runtime-libgdx.overlap2d-runtime-libgdx-0.1.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: overlap2d-runtime-libgdx.overlap2d-runtime-libgdx-0.1.2" level="project" />
   </component>
 </module>
