@@ -33,16 +33,16 @@ public class SpriteAnimationVO extends MainItemVO {
         animationName = spriteAnimationComponent.animationName;
         fps = spriteAnimationComponent.fps;
         frameRangeMap = new ArrayList<FrameRange>();
-        for(FrameRange fr: spriteAnimationComponent.frameRangeMap.values()) {
+        for (FrameRange fr : spriteAnimationComponent.frameRangeMap.values()) {
             frameRangeMap.add(fr);
         }
         currentAnimation = spriteAnimationComponent.currentAnimation;
-        if(spriteAnimationComponent.playMode == Animation.PlayMode.NORMAL) playMode = 0;
-        if(spriteAnimationComponent.playMode == Animation.PlayMode.REVERSED) playMode = 1;
-        if(spriteAnimationComponent.playMode == Animation.PlayMode.LOOP) playMode = 2;
-        if(spriteAnimationComponent.playMode == Animation.PlayMode.LOOP_REVERSED) playMode = 3;
-        if(spriteAnimationComponent.playMode == Animation.PlayMode.LOOP_PINGPONG) playMode = 4;
-        if(spriteAnimationComponent.playMode == Animation.PlayMode.LOOP_RANDOM) playMode = 5;
-        if(spriteAnimationComponent.playMode == Animation.PlayMode.NORMAL) playMode = 6;
+        if (spriteAnimationComponent.playMode == Animation.PlayMode.NORMAL) playMode = 0;
+        if (spriteAnimationComponent.playMode == Animation.PlayMode.REVERSED) playMode = 1;
+        if (spriteAnimationComponent.playMode == Animation.PlayMode.LOOP) playMode = 2;
+        if (spriteAnimationComponent.playMode == Animation.PlayMode.LOOP_REVERSED) playMode = 3;
+        if (spriteAnimationComponent.playMode == Animation.PlayMode.LOOP_PINGPONG) playMode = 4;
+        if (spriteAnimationComponent.playMode == Animation.PlayMode.LOOP_RANDOM) playMode = 5;
+        if (spriteAnimationComponent.playMode == Animation.PlayMode.NORMAL) playMode = 6;
     }
 }

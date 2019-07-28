@@ -66,10 +66,10 @@ public abstract class ShaderLogic {
         TextureRegionComponent entityTextureRegionComponent = textureRegionMapper.get(entity);
 
         DimensionsComponent dimensionsComponent = dimensionsComponentComponentMapper.get(entity);
-        float ppwu = dimensionsComponent.width/entityTextureRegionComponent.region.getRegionWidth();
+        float ppwu = dimensionsComponent.width / entityTextureRegionComponent.region.getRegionWidth();
 
         Vector2 atlasCoordsVector = new Vector2(entityTextureRegionComponent.region.getU(), entityTextureRegionComponent.region.getV());
-        Vector2 atlasSizeVector = new Vector2(entityTextureRegionComponent.region.getU2()-entityTextureRegionComponent.region.getU(), entityTextureRegionComponent.region.getV2()-entityTextureRegionComponent.region.getV());
+        Vector2 atlasSizeVector = new Vector2(entityTextureRegionComponent.region.getU2() - entityTextureRegionComponent.region.getU(), entityTextureRegionComponent.region.getV2() - entityTextureRegionComponent.region.getV());
 
         batch.getShader().setUniformi("isRepeat", 1);
         batch.getShader().setUniformf("atlasCoord", atlasCoordsVector);

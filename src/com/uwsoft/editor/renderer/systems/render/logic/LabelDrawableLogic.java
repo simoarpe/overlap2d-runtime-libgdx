@@ -9,32 +9,31 @@ import com.uwsoft.editor.renderer.components.label.LabelComponent;
 
 public class LabelDrawableLogic implements Drawable {
 
-	private ComponentMapper<LabelComponent> labelComponentMapper;
-	private ComponentMapper<TintComponent> tintComponentMapper;
-	private ComponentMapper<DimensionsComponent> dimensionsComponentMapper;
-	private ComponentMapper<TransformComponent> transformMapper;
+    private final Color tmpColor = new Color();
+    private ComponentMapper<LabelComponent> labelComponentMapper;
+    private ComponentMapper<TintComponent> tintComponentMapper;
+    private ComponentMapper<DimensionsComponent> dimensionsComponentMapper;
+    private ComponentMapper<TransformComponent> transformMapper;
     private ComponentMapper<ShaderComponent> shaderComponentMapper;
     private ComponentMapper<ParentNodeComponent> parentNodeComponentComponentMapper;
 
-	private final Color tmpColor = new Color();
-
-	public LabelDrawableLogic() {
-		labelComponentMapper = ComponentMapper.getFor(LabelComponent.class);
-		tintComponentMapper = ComponentMapper.getFor(TintComponent.class);
-		dimensionsComponentMapper = ComponentMapper.getFor(DimensionsComponent.class);
-		transformMapper = ComponentMapper.getFor(TransformComponent.class);
+    public LabelDrawableLogic() {
+        labelComponentMapper = ComponentMapper.getFor(LabelComponent.class);
+        tintComponentMapper = ComponentMapper.getFor(TintComponent.class);
+        dimensionsComponentMapper = ComponentMapper.getFor(DimensionsComponent.class);
+        transformMapper = ComponentMapper.getFor(TransformComponent.class);
         shaderComponentMapper = ComponentMapper.getFor(ShaderComponent.class);
         parentNodeComponentComponentMapper = ComponentMapper.getFor(ParentNodeComponent.class);
-	}
-	
-	@Override
-	public void draw(Batch batch, Entity entity, float parentAlpha) {
-		TransformComponent entityTransformComponent = transformMapper.get(entity);
-		LabelComponent labelComponent = labelComponentMapper.get(entity);
-		DimensionsComponent dimenstionsComponent = dimensionsComponentMapper.get(entity);
-		TintComponent tint = tintComponentMapper.get(entity);
+    }
 
-		tmpColor.set(tint.color);
+    @Override
+    public void draw(Batch batch, Entity entity, float parentAlpha) {
+        TransformComponent entityTransformComponent = transformMapper.get(entity);
+        LabelComponent labelComponent = labelComponentMapper.get(entity);
+        DimensionsComponent dimenstionsComponent = dimensionsComponentMapper.get(entity);
+        TintComponent tint = tintComponentMapper.get(entity);
+
+        tmpColor.set(tint.color);
         ShaderComponent shaderComponent = shaderComponentMapper.get(entity);
 
         if (shaderComponentMapper.has(entity) && shaderComponent.shaderLogic != null) {
@@ -45,7 +44,7 @@ public class LabelDrawableLogic implements Drawable {
                 //System.out.println("LAbel BG");
             }
 
-            if(labelComponent.style.fontColor != null) tmpColor.mul(labelComponent.style.fontColor);
+            if (labelComponent.style.fontColor != null) tmpColor.mul(labelComponent.style.fontColor);
             //tmpColor.a *= TODO consider parent alpha
             tmpColor.a *= tintComponentMapper.get(parentNodeComponentComponentMapper.get(entity).parentEntity).color.a;
 
@@ -60,7 +59,7 @@ public class LabelDrawableLogic implements Drawable {
                 //System.out.println("LAbel BG");
             }
 
-            if(labelComponent.style.fontColor != null) tmpColor.mul(labelComponent.style.fontColor);
+            if (labelComponent.style.fontColor != null) tmpColor.mul(labelComponent.style.fontColor);
             //tmpColor.a *= TODO consider parent alpha
             tmpColor.a *= tintComponentMapper.get(parentNodeComponentComponentMapper.get(entity).parentEntity).color.a;
 
@@ -68,6 +67,6 @@ public class LabelDrawableLogic implements Drawable {
             labelComponent.cache.setPosition(entityTransformComponent.x, entityTransformComponent.y);
             labelComponent.cache.draw(batch);
         }
-	}
+    }
 
 }

@@ -8,10 +8,10 @@ import java.util.Set;
 
 public class MainItemComponent implements Component {
     public int uniqueId = 0;
-	public String itemIdentifier = "";
-	public String libraryLink = "";
+    public String itemIdentifier = "";
+    public String libraryLink = "";
     public Set<String> tags = new HashSet<String>();
     public String customVars = "";
-	public int entityType;
-	public boolean visible = true;
+    public int entityType;
+    public boolean visible = true;
 }

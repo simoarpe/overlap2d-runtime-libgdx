@@ -9,14 +9,14 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.uwsoft.editor.renderer.systems.render.logic.ShaderLogic;
 
 public class ShaderComponent implements Component {
-	public String shaderName;
-	public ShaderProgram shaderProgram = null;
+    public String shaderName;
+    public ShaderProgram shaderProgram = null;
     public ShaderLogic shaderLogic;
 
 
     public void setShader(String name, ShaderProgram program) {
-		shaderName = name;
-		shaderProgram = program;
+        shaderName = name;
+        shaderProgram = program;
         shaderLogic = new ShaderLogic() {
 
             @Override
@@ -34,7 +34,7 @@ public class ShaderComponent implements Component {
                     //throw new RuntimeException( ": glError " + error);
                 }
 
-                if(textureRegionMapper.get(entity).polygonSprite != null) {
+                if (textureRegionMapper.get(entity).polygonSprite != null) {
                     drawTiledPolygonSprite(batch, entity);
                 } else {
                     drawSprite(batch, entity, parentAlpha);
@@ -42,14 +42,14 @@ public class ShaderComponent implements Component {
                 batch.setShader(null);
             }
         };
-	}
+    }
 
-	public ShaderProgram getShader() {
-		return shaderProgram;
-	}
+    public ShaderProgram getShader() {
+        return shaderProgram;
+    }
 
-	public void clear() {
-		shaderName = null;
-		shaderProgram = null;
-	}
+    public void clear() {
+        shaderName = null;
+        shaderProgram = null;
+    }
 }

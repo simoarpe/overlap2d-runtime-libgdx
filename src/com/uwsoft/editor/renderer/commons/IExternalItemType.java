@@ -31,9 +31,14 @@ import com.uwsoft.editor.renderer.systems.render.logic.Drawable;
 public interface IExternalItemType {
 
     public int getTypeId();
+
     public Drawable getDrawable();
+
     public IteratingSystem getSystem();
+
     public ComponentFactory getComponentFactory();
+
     public void injectMappers();
+
     public void injectDependencies(RayHandler rayHandler, World world, IResourceRetriever rm);
 }

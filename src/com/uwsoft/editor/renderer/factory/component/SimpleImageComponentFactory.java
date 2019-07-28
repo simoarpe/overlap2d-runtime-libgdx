@@ -38,43 +38,43 @@ import com.uwsoft.editor.renderer.utils.ComponentRetriever;
  */
 public class SimpleImageComponentFactory extends ComponentFactory {
 
-   private TextureRegionComponent textureRegionComponent;
+    private TextureRegionComponent textureRegionComponent;
 
     public SimpleImageComponentFactory(RayHandler rayHandler, World world, IResourceRetriever rm) {
         super(rayHandler, world, rm);
     }
 
     public void createComponents(Entity root, Entity entity, MainItemVO vo) {
-    	textureRegionComponent = createTextureRegionComponent(entity, (SimpleImageVO) vo);
-        createCommonComponents( entity, vo, EntityFactory.IMAGE_TYPE);
+        textureRegionComponent = createTextureRegionComponent(entity, (SimpleImageVO) vo);
+        createCommonComponents(entity, vo, EntityFactory.IMAGE_TYPE);
         createParentNodeComponent(root, entity);
         createNodeComponent(root, entity);
         updatePolygons(entity);
     }
 
     private void updatePolygons(Entity entity) {
-    	TextureRegionComponent textureRegionComponent = ComponentRetriever.get(entity, TextureRegionComponent.class);
-    	DimensionsComponent dimensionsComponent = ComponentRetriever.get(entity, DimensionsComponent.class);
-    	
-        ProjectInfoVO projectInfoVO = rm.getProjectVO();
-    	
-    	PolygonComponent polygonComponent = ComponentRetriever.get(entity, PolygonComponent.class);
-    	if(textureRegionComponent.isPolygon && polygonComponent != null && polygonComponent.vertices != null) {
-    		textureRegionComponent.setPolygonSprite(polygonComponent, projectInfoVO.pixelToWorld);
-    		dimensionsComponent.setPolygon(polygonComponent);
-    	}
-	}
+        TextureRegionComponent textureRegionComponent = ComponentRetriever.get(entity, TextureRegionComponent.class);
+        DimensionsComponent dimensionsComponent = ComponentRetriever.get(entity, DimensionsComponent.class);
 
-	@Override
+        ProjectInfoVO projectInfoVO = rm.getProjectVO();
+
+        PolygonComponent polygonComponent = ComponentRetriever.get(entity, PolygonComponent.class);
+        if (textureRegionComponent.isPolygon && polygonComponent != null && polygonComponent.vertices != null) {
+            textureRegionComponent.setPolygonSprite(polygonComponent, projectInfoVO.pixelToWorld);
+            dimensionsComponent.setPolygon(polygonComponent);
+        }
+    }
+
+    @Override
     protected DimensionsComponent createDimensionsComponent(Entity entity, MainItemVO vo) {
         DimensionsComponent component = new DimensionsComponent();
 
         TextureRegionComponent textureRegionComponent = ComponentRetriever.get(entity, TextureRegionComponent.class);
-        
+
         ResolutionEntryVO resolutionEntryVO = rm.getLoadedResolution();
         ProjectInfoVO projectInfoVO = rm.getProjectVO();
         float multiplier = resolutionEntryVO.getMultiplier(rm.getProjectVO().originalResolution);
-        
+
         component.width = (float) textureRegionComponent.region.getRegionWidth() * multiplier / projectInfoVO.pixelToWorld;
         component.height = (float) textureRegionComponent.region.getRegionHeight() * multiplier / projectInfoVO.pixelToWorld;
         entity.add(component);

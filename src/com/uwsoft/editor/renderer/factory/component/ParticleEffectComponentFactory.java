@@ -64,10 +64,10 @@ public class ParticleEffectComponentFactory extends ComponentFactory {
     protected ParticleComponent createParticleComponent(Entity entity, ParticleEffectVO vo) {
         ParticleComponent component = new ParticleComponent();
         component.particleName = vo.particleName;
-		ParticleEffect particleEffect = new ParticleEffect(rm.getParticleEffect(vo.particleName));
+        ParticleEffect particleEffect = new ParticleEffect(rm.getParticleEffect(vo.particleName));
         component.particleEffect = particleEffect;
         ProjectInfoVO projectInfoVO = rm.getProjectVO();
-        component.worldMultiplyer = 1f/projectInfoVO.pixelToWorld;
+        component.worldMultiplyer = 1f / projectInfoVO.pixelToWorld;
         component.scaleEffect(1f);
 
         entity.add(component);

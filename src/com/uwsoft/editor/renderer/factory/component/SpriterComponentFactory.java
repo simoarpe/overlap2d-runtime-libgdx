@@ -70,18 +70,18 @@ public class SpriterComponentFactory extends ComponentFactory {
 
     protected SpriterComponent createSpriterDataComponent(Entity entity, SpriterVO vo) {
         SpriterComponent component = new SpriterComponent();
-        component. entity = vo.entity;
+        component.entity = vo.entity;
         component.animation = vo.animation;
-        component. animationName = vo.animationName;
+        component.animationName = vo.animationName;
         component.scale = vo.scale;
 
-        FileHandle handle 	=	rm.getSCMLFile(vo.animationName);
+        FileHandle handle = rm.getSCMLFile(vo.animationName);
         component.data = new SCMLReader(handle.read()).getData();
-        LibGdxLoader loader = 	new LibGdxLoader(component.data);
+        LibGdxLoader loader = new LibGdxLoader(component.data);
         loader.load(handle.file());
 
-        component.currentAnimationIndex	=	vo.animation;
-        component.currentEntityIndex		=	vo.entity;
+        component.currentAnimationIndex = vo.animation;
+        component.currentEntityIndex = vo.entity;
 
         component.player = new Player(component.data.getEntity(component.currentEntityIndex));
 

@@ -12,19 +12,19 @@ import com.uwsoft.editor.renderer.components.*;
 public class TexturRegionDrawLogic implements Drawable {
 
     private ComponentMapper<TintComponent> tintComponentComponentMapper;
-	private ComponentMapper<TextureRegionComponent> textureRegionMapper;
-	private ComponentMapper<TransformComponent> transformMapper;
-	private ComponentMapper<DimensionsComponent> dimensionsComponentComponentMapper;
-	private ComponentMapper<ShaderComponent> shaderComponentMapper;
+    private ComponentMapper<TextureRegionComponent> textureRegionMapper;
+    private ComponentMapper<TransformComponent> transformMapper;
+    private ComponentMapper<DimensionsComponent> dimensionsComponentComponentMapper;
+    private ComponentMapper<ShaderComponent> shaderComponentMapper;
 
 
     public TexturRegionDrawLogic() {
-		tintComponentComponentMapper = ComponentMapper.getFor(TintComponent.class);
-		textureRegionMapper = ComponentMapper.getFor(TextureRegionComponent.class);
-		transformMapper = ComponentMapper.getFor(TransformComponent.class);
-		dimensionsComponentComponentMapper = ComponentMapper.getFor(DimensionsComponent.class);
-		shaderComponentMapper = ComponentMapper.getFor(ShaderComponent.class);
-	}
+        tintComponentComponentMapper = ComponentMapper.getFor(TintComponent.class);
+        textureRegionMapper = ComponentMapper.getFor(TextureRegionComponent.class);
+        transformMapper = ComponentMapper.getFor(TransformComponent.class);
+        dimensionsComponentComponentMapper = ComponentMapper.getFor(DimensionsComponent.class);
+        shaderComponentMapper = ComponentMapper.getFor(ShaderComponent.class);
+    }
 
     @Override
     public void draw(Batch batch, Entity entity, float parentAlpha) {
@@ -34,7 +34,7 @@ public class TexturRegionDrawLogic implements Drawable {
         if (shaderComponentMapper.has(entity) && shaderComponent.shaderLogic != null) {
             shaderComponent.shaderLogic.draw(batch, entity, parentAlpha);
         } else {
-            if(entityTextureRegionComponent.polygonSprite != null) {
+            if (entityTextureRegionComponent.polygonSprite != null) {
                 drawTiledPolygonSprite(batch, entity);
             } else {
                 drawSprite(batch, entity, parentAlpha);
@@ -72,20 +72,20 @@ public class TexturRegionDrawLogic implements Drawable {
     }
 
     public void drawTiledPolygonSprite(Batch batch, Entity entity) {
-    	batch.flush();
+        batch.flush();
         TintComponent tintComponent = tintComponentComponentMapper.get(entity);
         TransformComponent entityTransformComponent = transformMapper.get(entity);
         TextureRegionComponent entityTextureRegionComponent = textureRegionMapper.get(entity);
-        
+
         DimensionsComponent dimensionsComponent = dimensionsComponentComponentMapper.get(entity);
-        float ppwu = dimensionsComponent.width/entityTextureRegionComponent.region.getRegionWidth();
+        float ppwu = dimensionsComponent.width / entityTextureRegionComponent.region.getRegionWidth();
 
         Vector2 atlasCoordsVector = new Vector2(entityTextureRegionComponent.region.getU(), entityTextureRegionComponent.region.getV());
-        Vector2 atlasSizeVector = new Vector2(entityTextureRegionComponent.region.getU2()-entityTextureRegionComponent.region.getU(), entityTextureRegionComponent.region.getV2()-entityTextureRegionComponent.region.getV());
+        Vector2 atlasSizeVector = new Vector2(entityTextureRegionComponent.region.getU2() - entityTextureRegionComponent.region.getU(), entityTextureRegionComponent.region.getV2() - entityTextureRegionComponent.region.getV());
 
         batch.getShader().setUniformi("isRepeat", 1);
         batch.getShader().setUniformf("atlasCoord", atlasCoordsVector);
-    	batch.getShader().setUniformf("atlasSize", atlasSizeVector);
+        batch.getShader().setUniformf("atlasSize", atlasSizeVector);
         //System.out.println(entityTransformComponent.originX);
         //batch.setColor(tintComponent.color);
         entityTextureRegionComponent.polygonSprite.setColor(tintComponent.color);
@@ -96,6 +96,6 @@ public class TexturRegionDrawLogic implements Drawable {
         entityTextureRegionComponent.polygonSprite.draw((PolygonSpriteBatch) batch);
         batch.flush();
         batch.getShader().setUniformi("isRepeat", 0);
-       
+
     }
 }

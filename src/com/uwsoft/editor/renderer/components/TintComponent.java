@@ -4,5 +4,5 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.Color;
 
 public class TintComponent implements Component {
-	public Color color = new Color();
+    public Color color = new Color();
 }

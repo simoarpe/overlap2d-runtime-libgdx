@@ -15,71 +15,71 @@ import com.uwsoft.editor.renderer.components.TransformComponent;
 import com.uwsoft.editor.renderer.components.label.LabelComponent;
 
 public class LabelSystem extends IteratingSystem {
-	private ComponentMapper<LabelComponent> labelComponentMapper = ComponentMapper.getFor(LabelComponent.class);
-	private ComponentMapper<TransformComponent> transformComponentMapper = ComponentMapper.getFor(TransformComponent.class);
-	private ComponentMapper<DimensionsComponent> dimensionComponentMapper = ComponentMapper.getFor(DimensionsComponent.class);
-	private TransformComponent transformComponent;
-	private LabelComponent labelComponent;
-	private DimensionsComponent dimensionsComponent;
-	
-	public LabelSystem() {
-		super(Family.all(LabelComponent.class).get());
-	}
+    private ComponentMapper<LabelComponent> labelComponentMapper = ComponentMapper.getFor(LabelComponent.class);
+    private ComponentMapper<TransformComponent> transformComponentMapper = ComponentMapper.getFor(TransformComponent.class);
+    private ComponentMapper<DimensionsComponent> dimensionComponentMapper = ComponentMapper.getFor(DimensionsComponent.class);
+    private TransformComponent transformComponent;
+    private LabelComponent labelComponent;
+    private DimensionsComponent dimensionsComponent;
 
-	@Override
-	protected void processEntity(Entity entity, float deltaTime) {
-		
-		transformComponent =  transformComponentMapper.get(entity);
-		labelComponent =  labelComponentMapper.get(entity);
-		dimensionsComponent = dimensionComponentMapper.get(entity);
-		
-		BitmapFont font = labelComponent.cache.getFont();
-		
-		float oldScaleX = font.getScaleX();
-		float oldScaleY = font.getScaleY();
-		float fontScaleX = labelComponent.fontScaleX;
-		float fontScaleY = labelComponent.fontScaleY;
-		if (fontScaleX != 1 || fontScaleY != 1) font.getData().setScale(fontScaleX, fontScaleY);
-		
-		//horisontal Align
-		
-		float textWidth = labelComponent.layout.width;
-		float textHeight = labelComponent.layout.height;
-		float textX = 0;
-		
-		if (labelComponent.wrap || labelComponent.text.indexOf("\n") != -1) {
-			// If the text can span multiple lines, determine the text's actual size so it can be aligned within the label.
-			labelComponent.layout.setText(font, labelComponent.text, 0, labelComponent.text.length, Color.WHITE, dimensionsComponent.width, labelComponent.lineAlign, labelComponent.wrap, null);
-			textWidth = labelComponent.layout.width;
-			textHeight = labelComponent.layout.height;
+    public LabelSystem() {
+        super(Family.all(LabelComponent.class).get());
+    }
 
-			if ((labelComponent.lineAlign  & Align.left) == 0) {
-				if ((labelComponent.lineAlign & Align.right) != 0)
-					textX += dimensionsComponent.width - textWidth;
-				else
-					textX += (dimensionsComponent.width - textWidth) / 2;
-			}
-		}
-		
-		//vertical Align
-		float textY = textHeight;
-		if ((labelComponent.labelAlign & Align.top) != 0) {
-			textY += labelComponent.cache.getFont().isFlipped() ? 0 : dimensionsComponent.height - textHeight;
-			textY += labelComponent.style.font.getDescent();
-		} else if ((labelComponent.labelAlign & Align.bottom) != 0) {
-			textY += labelComponent.cache.getFont().isFlipped() ? dimensionsComponent.height - textHeight : 0;
-			textY -= labelComponent.style.font.getDescent();
-		} else {
-			textY += (dimensionsComponent.height - textHeight) / 2;
-		}
-		
-		
-		labelComponent.layout.setText(font, labelComponent.text, 0, labelComponent.text.length, Color.WHITE, dimensionsComponent.width, labelComponent.lineAlign, labelComponent.wrap, null);
-		labelComponent.cache.setText(labelComponent.layout, textX, textY);
-		
-		if (fontScaleX != 1 || fontScaleY != 1) font.getData().setScale(oldScaleX, oldScaleY);
-	}
-	
+    @Override
+    protected void processEntity(Entity entity, float deltaTime) {
+
+        transformComponent = transformComponentMapper.get(entity);
+        labelComponent = labelComponentMapper.get(entity);
+        dimensionsComponent = dimensionComponentMapper.get(entity);
+
+        BitmapFont font = labelComponent.cache.getFont();
+
+        float oldScaleX = font.getScaleX();
+        float oldScaleY = font.getScaleY();
+        float fontScaleX = labelComponent.fontScaleX;
+        float fontScaleY = labelComponent.fontScaleY;
+        if (fontScaleX != 1 || fontScaleY != 1) font.getData().setScale(fontScaleX, fontScaleY);
+
+        //horisontal Align
+
+        float textWidth = labelComponent.layout.width;
+        float textHeight = labelComponent.layout.height;
+        float textX = 0;
+
+        if (labelComponent.wrap || labelComponent.text.indexOf("\n") != -1) {
+            // If the text can span multiple lines, determine the text's actual size so it can be aligned within the label.
+            labelComponent.layout.setText(font, labelComponent.text, 0, labelComponent.text.length, Color.WHITE, dimensionsComponent.width, labelComponent.lineAlign, labelComponent.wrap, null);
+            textWidth = labelComponent.layout.width;
+            textHeight = labelComponent.layout.height;
+
+            if ((labelComponent.lineAlign & Align.left) == 0) {
+                if ((labelComponent.lineAlign & Align.right) != 0)
+                    textX += dimensionsComponent.width - textWidth;
+                else
+                    textX += (dimensionsComponent.width - textWidth) / 2;
+            }
+        }
+
+        //vertical Align
+        float textY = textHeight;
+        if ((labelComponent.labelAlign & Align.top) != 0) {
+            textY += labelComponent.cache.getFont().isFlipped() ? 0 : dimensionsComponent.height - textHeight;
+            textY += labelComponent.style.font.getDescent();
+        } else if ((labelComponent.labelAlign & Align.bottom) != 0) {
+            textY += labelComponent.cache.getFont().isFlipped() ? dimensionsComponent.height - textHeight : 0;
+            textY -= labelComponent.style.font.getDescent();
+        } else {
+            textY += (dimensionsComponent.height - textHeight) / 2;
+        }
+
+
+        labelComponent.layout.setText(font, labelComponent.text, 0, labelComponent.text.length, Color.WHITE, dimensionsComponent.width, labelComponent.lineAlign, labelComponent.wrap, null);
+        labelComponent.cache.setText(labelComponent.layout, textX, textY);
+
+        if (fontScaleX != 1 || fontScaleY != 1) font.getData().setScale(oldScaleX, oldScaleY);
+    }
+
 //	private void scaleAndComputePrefSize () {
 //		BitmapFont font = labelComponent.cache.getFont();
 //		float oldScaleX = font.getScaleX();

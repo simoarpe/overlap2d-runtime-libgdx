@@ -32,7 +32,7 @@ public class ScriptComponent implements Component {
         Iterator<IScript> i = scripts.iterator();
         while (i.hasNext()) {
             IScript s = i.next();
-            if(s.getClass().getName().equals(className)) {
+            if (s.getClass().getName().equals(className)) {
                 i.remove();
             }
         }

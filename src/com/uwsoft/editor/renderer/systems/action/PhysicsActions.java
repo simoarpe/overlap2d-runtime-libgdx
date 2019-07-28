@@ -26,6 +26,7 @@ public class PhysicsActions {
     /**
      * Apply a force to an entity with physics component. The force is applied as long as
      * the corresponding entity as a physics component.
+     *
      * @param force The world force vector, usually in Newtons (N)
      * @return The com.uwsoft.editor.renderer.systems.action.data.ForceData object
      */
@@ -40,7 +41,8 @@ public class PhysicsActions {
     /**
      * Apply a force to an entity with physics component. The force is applied as long as
      * the corresponding entity as a physics component.
-     * @param force The world force vector, usually in Newtons (N)
+     *
+     * @param force         The world force vector, usually in Newtons (N)
      * @param relativePoint The point where the force is applied relative to the body origin
      * @return The com.uwsoft.editor.renderer.systems.action.data.ForceData object
      */
@@ -54,8 +56,9 @@ public class PhysicsActions {
 
     /**
      * Apply a force to an entity with physics component.
-     * @param force The world force vector, usually in Newtons (N)
-     * @param relativePoint The point where the force is applied relative to the body origin
+     *
+     * @param force           The world force vector, usually in Newtons (N)
+     * @param relativePoint   The point where the force is applied relative to the body origin
      * @param linkedComponent The force is applied as long as the corresponding entity
      *                        has this component
      * @return The com.uwsoft.editor.renderer.systems.action.data.ForceData object

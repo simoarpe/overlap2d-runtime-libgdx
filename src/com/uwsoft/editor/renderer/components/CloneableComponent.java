@@ -24,5 +24,6 @@ package com.uwsoft.editor.renderer.components;
  */
 public interface CloneableComponent {
     CloneableComponent get();
+
     void set(CloneableComponent source);
 }

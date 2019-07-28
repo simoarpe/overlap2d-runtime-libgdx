@@ -19,5 +19,5 @@ public abstract class RelativeTemporalAction<T extends RelativeTemporalData> ext
         data.lastPercent = 0;
     }
 
-    abstract protected void updateRelative (float percentDelta, Entity entity, T actionData);
+    abstract protected void updateRelative(float percentDelta, Entity entity, T actionData);
 }

@@ -15,8 +15,8 @@ public class FontSizePair {
 
     @Override
     public boolean equals(Object arg0) {
-        FontSizePair arg = (FontSizePair)arg0;
-        if(arg.fontName.equals(fontName) && arg.fontSize == fontSize) return true;
+        FontSizePair arg = (FontSizePair) arg0;
+        if (arg.fontName.equals(fontName) && arg.fontSize == fontSize) return true;
 
         return false;
     }

@@ -14,25 +14,33 @@ import com.uwsoft.editor.renderer.data.*;
 import com.uwsoft.editor.renderer.factory.EntityFactory;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
 
-public class LabelComponentFactory extends ComponentFactory{
-	
-	private static int labelDefaultSize = 12;
+public class LabelComponentFactory extends ComponentFactory {
 
-	public LabelComponentFactory(RayHandler rayHandler, World world, IResourceRetriever rm) {
-		super(rayHandler, world, rm);
-		// TODO Auto-generated constructor stub
-	}
+    private static int labelDefaultSize = 12;
 
-	@Override
-	public void createComponents(Entity root, Entity entity, MainItemVO vo) {
-		 createCommonComponents(entity, vo, EntityFactory.LABEL_TYPE);
-		 createParentNodeComponent(root, entity);
-		 createNodeComponent(root, entity);
-		 createLabelComponent(entity, (LabelVO) vo);
-	}
+    public LabelComponentFactory(RayHandler rayHandler, World world, IResourceRetriever rm) {
+        super(rayHandler, world, rm);
+        // TODO Auto-generated constructor stub
+    }
 
-	@Override
-	protected DimensionsComponent createDimensionsComponent(Entity entity, MainItemVO vo) {
+    public static LabelStyle generateStyle(IResourceRetriever rManager, String fontName, int size) {
+
+        if (size == 0) {
+            size = labelDefaultSize;
+        }
+        return new LabelStyle(rManager.getBitmapFont(fontName, size), null);
+    }
+
+    @Override
+    public void createComponents(Entity root, Entity entity, MainItemVO vo) {
+        createCommonComponents(entity, vo, EntityFactory.LABEL_TYPE);
+        createParentNodeComponent(root, entity);
+        createNodeComponent(root, entity);
+        createLabelComponent(entity, (LabelVO) vo);
+    }
+
+    @Override
+    protected DimensionsComponent createDimensionsComponent(Entity entity, MainItemVO vo) {
         DimensionsComponent component = new DimensionsComponent();
         component.height = ((LabelVO) vo).height;
         component.width = ((LabelVO) vo).width;
@@ -42,7 +50,7 @@ public class LabelComponentFactory extends ComponentFactory{
     }
 
     protected LabelComponent createLabelComponent(Entity entity, LabelVO vo) {
-    	LabelComponent component = new LabelComponent(vo.text, generateStyle(rm, vo.style, vo.size));
+        LabelComponent component = new LabelComponent(vo.text, generateStyle(rm, vo.style, vo.size));
         component.fontName = vo.style;
         component.fontSize = vo.size;
         component.setAlignment(vo.align);
@@ -51,19 +59,10 @@ public class LabelComponentFactory extends ComponentFactory{
         ResolutionEntryVO resolutionEntryVO = rm.getLoadedResolution();
         float multiplier = resolutionEntryVO.getMultiplier(rm.getProjectVO().originalResolution);
 
-        component.setFontScale(multiplier/projectInfoVO.pixelToWorld);
+        component.setFontScale(multiplier / projectInfoVO.pixelToWorld);
 
         entity.add(component);
         return component;
-    }
-    
-    
-    public static LabelStyle generateStyle(IResourceRetriever rManager, String fontName, int size) {
-
-        if (size == 0) {
-            size = labelDefaultSize;
-        }
-        return new LabelStyle(rManager.getBitmapFont(fontName, size), null);
     }
 
 }

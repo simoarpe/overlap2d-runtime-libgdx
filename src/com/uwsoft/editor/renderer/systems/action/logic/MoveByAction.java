@@ -13,8 +13,8 @@ public class MoveByAction<T extends MoveByData> extends RelativeTemporalAction<T
     protected void updateRelative(float percentDelta, Entity entity, T actionData) {
         TransformComponent transformComponent = ComponentRetriever.get(entity, TransformComponent.class);
 
-        float amountX = actionData.amountX*percentDelta;
-        float amountY = actionData.amountY*percentDelta;
+        float amountX = actionData.amountX * percentDelta;
+        float amountY = actionData.amountY * percentDelta;
 
         transformComponent.x += amountX;
         transformComponent.y += amountY;

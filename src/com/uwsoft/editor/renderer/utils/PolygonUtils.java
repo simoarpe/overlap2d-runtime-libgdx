@@ -18,15 +18,15 @@ public class PolygonUtils {
         Set<Edge> uniqueEdges = new HashSet<Edge>();
         Set<Edge> duplicateEdges = new HashSet<Edge>();
 
-        for(int i = 0; i < polys.length; i++) {
-            for(int j = 0; j < polys[i].length; j++) {
+        for (int i = 0; i < polys.length; i++) {
+            for (int j = 0; j < polys[i].length; j++) {
                 Edge edge = null;
-                if(j < polys[i].length - 1) {
-                    edge = new Edge(polys[i][j].x, polys[i][j].y, polys[i][j+1].x, polys[i][j+1].y);
-                } else if(j == polys[i].length - 1) {
+                if (j < polys[i].length - 1) {
+                    edge = new Edge(polys[i][j].x, polys[i][j].y, polys[i][j + 1].x, polys[i][j + 1].y);
+                } else if (j == polys[i].length - 1) {
                     edge = new Edge(polys[i][j].x, polys[i][j].y, polys[i][0].x, polys[i][0].y);
                 }
-                if(uniqueEdges.contains(edge)) {
+                if (uniqueEdges.contains(edge)) {
                     duplicateEdges.add(edge);
                 } else {
                     uniqueEdges.add(edge);
@@ -37,7 +37,7 @@ public class PolygonUtils {
         uniqueEdges.removeAll(duplicateEdges);
 
         Array<Vector2[]> result = new Array<Vector2[]>();
-        while(!uniqueEdges.isEmpty()) {
+        while (!uniqueEdges.isEmpty()) {
             Vector2[] mesh = extractClosedLoop(uniqueEdges);
             mesh = clearUnnecessaryVertices(mesh);
             result.add(mesh);
@@ -54,14 +54,14 @@ public class PolygonUtils {
 
     public static Vector2[] clearUnnecessaryVertices(Vector2[] points) {
         Array<Vector2> result = new Array<Vector2>();
-        if(points.length < 3) return points;
-        for(int i = 0; i < points.length; i++) {
+        if (points.length < 3) return points;
+        for (int i = 0; i < points.length; i++) {
             Vector2 currPoint = points[i];
-            Vector2 prevPoint = points[points.length-1];
+            Vector2 prevPoint = points[points.length - 1];
             Vector2 nextPoint = points[0];
-            if (i > 0) prevPoint = points[i-1];
-            if( i < points.length-1) nextPoint = points[i+1];
-            if(Intersector.pointLineSide(prevPoint, nextPoint, currPoint) != 0) {
+            if (i > 0) prevPoint = points[i - 1];
+            if (i < points.length - 1) nextPoint = points[i + 1];
+            if (Intersector.pointLineSide(prevPoint, nextPoint, currPoint) != 0) {
                 result.add(currPoint);
             }
         }
@@ -74,20 +74,20 @@ public class PolygonUtils {
         Edge edge = (Edge) edges.toArray()[0];
         edges.remove(edge);
         sortedList.add(edge);
-        while(!edges.isEmpty()) {
+        while (!edges.isEmpty()) {
             boolean result2 = false;
             boolean result1 = appendNextEdge(sortedList, edges);
-            if(!edges.isEmpty()) {
+            if (!edges.isEmpty()) {
                 result2 = appendPrevEdge(sortedList, edges);
             }
-            if(!result1 && !result2) {
+            if (!result1 && !result2) {
                 break;
             }
         }
 
         Vector2[] result = new Vector2[sortedList.size()];
         int iterator = 0;
-        for(Edge tmp: sortedList) {
+        for (Edge tmp : sortedList) {
             result[iterator++] = tmp.start;
         }
 
@@ -95,11 +95,11 @@ public class PolygonUtils {
     }
 
     public static boolean appendNextEdge(ArrayList<Edge> sortedList, Set<Edge> edges) {
-        Edge lastEdge = sortedList.get(sortedList.size()-1);
+        Edge lastEdge = sortedList.get(sortedList.size() - 1);
         Vector2 point = lastEdge.end;
-        for(Edge edge: edges) {
-            if(edge.linkedTo(point)) {
-                if(edge.end.equals(lastEdge.end)) {
+        for (Edge edge : edges) {
+            if (edge.linkedTo(point)) {
+                if (edge.end.equals(lastEdge.end)) {
                     edge.reverse();
                 }
                 edges.remove(edge);
@@ -114,9 +114,9 @@ public class PolygonUtils {
     public static boolean appendPrevEdge(ArrayList<Edge> sortedList, Set<Edge> edges) {
         Edge prevEdge = sortedList.get(0);
         Vector2 point = prevEdge.start;
-        for(Edge edge: edges) {
-            if(edge.linkedTo(point)) {
-                if(edge.start.equals(prevEdge.start)) {
+        for (Edge edge : edges) {
+            if (edge.linkedTo(point)) {
+                if (edge.start.equals(prevEdge.start)) {
                     edge.reverse();
                 }
                 edges.remove(edge);
@@ -138,7 +138,7 @@ public class PolygonUtils {
 
         Vector2[] result = new Vector2[sortedList.size()];
         int iterator = 0;
-        for(Edge edge: sortedList) {
+        for (Edge edge : sortedList) {
             result[iterator++] = edge.start;
         }
 
@@ -148,9 +148,9 @@ public class PolygonUtils {
     @Deprecated
     private static ArrayList<Edge> recursivelySortChainPoints(Set<Edge> edges, Edge edge, ArrayList<Edge> sortedList) {
         Edge nextEdge = findLink(edges, edge, edge.end);
-        if(!edge.end.equals(nextEdge.start)) nextEdge.reverse();
+        if (!edge.end.equals(nextEdge.start)) nextEdge.reverse();
         sortedList.add(nextEdge);
-        if(sortedList.get(0).linkedTo(sortedList.get(sortedList.size() - 1)) && sortedList.size() >= 3) {
+        if (sortedList.get(0).linkedTo(sortedList.get(sortedList.size() - 1)) && sortedList.size() >= 3) {
             //loop is closed
             return sortedList;
         }
@@ -158,8 +158,8 @@ public class PolygonUtils {
     }
 
     public static Edge findLink(Set<Edge> edges, Edge edge, Vector2 point) {
-        for(Edge linkedEdge: edges) {
-            if(!linkedEdge.equals(edge) && linkedEdge.linkedTo(point)) {
+        for (Edge linkedEdge : edges) {
+            if (!linkedEdge.equals(edge) && linkedEdge.linkedTo(point)) {
                 return linkedEdge;
             }
         }
@@ -185,12 +185,13 @@ public class PolygonUtils {
         }
 
         public boolean linkedTo(Vector2 point) {
-            if(start.equals(point) || end.equals(point)) return true;
+            if (start.equals(point) || end.equals(point)) return true;
             return false;
         }
 
         public boolean linkedTo(Edge edge) {
-            if(!this.equals(edge) && (start.equals(edge.end) || end.equals(edge.start) || end.equals(edge.end) || start.equals(edge.start))) return true;
+            if (!this.equals(edge) && (start.equals(edge.end) || end.equals(edge.start) || end.equals(edge.end) || start.equals(edge.start)))
+                return true;
             return false;
         }
 
@@ -210,13 +211,15 @@ public class PolygonUtils {
             boolean result1;
             boolean result2;
 
-            if (!start.equals(edge.start)) {result1 = false;}
-            else {
+            if (!start.equals(edge.start)) {
+                result1 = false;
+            } else {
                 result1 = end.equals(edge.end);
             }
 
-            if (!start.equals(edge.end)) {result2 = false;}
-            else {
+            if (!start.equals(edge.end)) {
+                result2 = false;
+            } else {
                 result2 = end.equals(edge.start);
             }
 

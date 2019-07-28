@@ -13,19 +13,17 @@ import com.uwsoft.editor.renderer.utils.TransformMathUtils;
 
 public class CompositeSystem extends IteratingSystem {
 
-    private ComponentMapper<DimensionsComponent> dimensionsMapper;
-    private ComponentMapper<TransformComponent> transformMapper;
-    private ComponentMapper<NodeComponent> nodeMapper;
-    private ComponentMapper<CompositeTransformComponent> compositeMapper;
-
-    private DimensionsComponent dimensionsComponent;
-    private NodeComponent nodeComponent;
-
     private final Vector2 p1 = new Vector2();
     private final Vector2 p2 = new Vector2();
     private final Vector2 p3 = new Vector2();
     private final Vector2 p4 = new Vector2();
     private final Vector2 tmpBoundPoints = new Vector2();
+    private ComponentMapper<DimensionsComponent> dimensionsMapper;
+    private ComponentMapper<TransformComponent> transformMapper;
+    private ComponentMapper<NodeComponent> nodeMapper;
+    private ComponentMapper<CompositeTransformComponent> compositeMapper;
+    private DimensionsComponent dimensionsComponent;
+    private NodeComponent nodeComponent;
 
     public CompositeSystem() {
         super(Family.all(CompositeTransformComponent.class).get());

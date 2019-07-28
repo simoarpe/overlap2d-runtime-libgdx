@@ -10,9 +10,9 @@ import com.esotericsoftware.spine.attachments.WeightedMeshAttachment;
 import com.uwsoft.editor.renderer.components.DimensionsComponent;
 
 public class SpineObjectComponent implements Component {
-	public SkeletonData skeletonData;
-	public Skeleton skeleton;
-	public SkeletonJson skeletonJson;
+    public SkeletonData skeletonData;
+    public Skeleton skeleton;
+    public SkeletonJson skeletonJson;
     public AnimationState state;
     public float minX;
     public float minY;
@@ -39,7 +39,8 @@ public class SpineObjectComponent implements Component {
             Slot slot = skeleton.getSlots().get(i);
             Attachment attachment = slot.getAttachment();
             if (attachment == null) continue;
-            if (!((attachment instanceof RegionAttachment) || (attachment instanceof MeshAttachment) || (attachment instanceof WeightedMeshAttachment))) continue;
+            if (!((attachment instanceof RegionAttachment) || (attachment instanceof MeshAttachment) || (attachment instanceof WeightedMeshAttachment)))
+                continue;
             float[] vertices = new float[0];
             if ((attachment instanceof RegionAttachment)) {
                 RegionAttachment region = (RegionAttachment) attachment;

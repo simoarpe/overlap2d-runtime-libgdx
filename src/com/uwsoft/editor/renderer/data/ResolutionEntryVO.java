@@ -30,10 +30,10 @@ public class ResolutionEntryVO {
 
     public float getMultiplier(ResolutionEntryVO originalResolution) {
         float mul;
-        if(base == 0) {
-            mul = (float)originalResolution.width/width;
+        if (base == 0) {
+            mul = (float) originalResolution.width / width;
         } else {
-            mul = (float)originalResolution.height/height;
+            mul = (float) originalResolution.height / height;
         }
         return mul;
     }

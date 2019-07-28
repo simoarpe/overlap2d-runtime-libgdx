@@ -18,56 +18,56 @@ import com.uwsoft.editor.renderer.resources.IResourceRetriever;
 
 public class NinePatchComponentFactory extends ComponentFactory {
 
-	private NinePatchComponent ninePatchComponent;
+    private NinePatchComponent ninePatchComponent;
 
-	public NinePatchComponentFactory(RayHandler rayHandler, World world, IResourceRetriever rm) {
-		super(rayHandler, world, rm);
-	}
+    public NinePatchComponentFactory(RayHandler rayHandler, World world, IResourceRetriever rm) {
+        super(rayHandler, world, rm);
+    }
 
-	@Override
-	public void createComponents(Entity root, Entity entity, MainItemVO vo) {
-		ninePatchComponent = createNinePatchComponent(entity, (Image9patchVO) vo);
-		createCommonComponents(entity, vo, EntityFactory.NINE_PATCH);
-		createParentNodeComponent(root, entity);
-		createNodeComponent(root, entity);
-	}
+    @Override
+    public void createComponents(Entity root, Entity entity, MainItemVO vo) {
+        ninePatchComponent = createNinePatchComponent(entity, (Image9patchVO) vo);
+        createCommonComponents(entity, vo, EntityFactory.NINE_PATCH);
+        createParentNodeComponent(root, entity);
+        createNodeComponent(root, entity);
+    }
 
-	@Override
-	protected DimensionsComponent createDimensionsComponent(Entity entity, MainItemVO vo) {
-		DimensionsComponent component = new DimensionsComponent();
-		component.height = ((Image9patchVO) vo).height;
-		component.width = ((Image9patchVO) vo).width;
-		if(component.width == 0) {
-			component.width = ninePatchComponent.ninePatch.getTotalWidth();
-		}
+    @Override
+    protected DimensionsComponent createDimensionsComponent(Entity entity, MainItemVO vo) {
+        DimensionsComponent component = new DimensionsComponent();
+        component.height = ((Image9patchVO) vo).height;
+        component.width = ((Image9patchVO) vo).width;
+        if (component.width == 0) {
+            component.width = ninePatchComponent.ninePatch.getTotalWidth();
+        }
 
-		if(component.height == 0) {
-			component.height = ninePatchComponent.ninePatch.getTotalHeight();
-		}
+        if (component.height == 0) {
+            component.height = ninePatchComponent.ninePatch.getTotalHeight();
+        }
 
-		entity.add(component);
-		return component;
-	}
+        entity.add(component);
+        return component;
+    }
 
-	private NinePatchComponent createNinePatchComponent(Entity entity, Image9patchVO vo) {
-		NinePatchComponent ninePatchComponent = new NinePatchComponent();
-		AtlasRegion atlasRegion = (TextureAtlas.AtlasRegion) rm.getTextureRegion(vo.imageName);
-		ninePatchComponent.ninePatch = new NinePatch(atlasRegion, atlasRegion.splits[0], atlasRegion.splits[1], atlasRegion.splits[2], atlasRegion.splits[3]);
+    private NinePatchComponent createNinePatchComponent(Entity entity, Image9patchVO vo) {
+        NinePatchComponent ninePatchComponent = new NinePatchComponent();
+        AtlasRegion atlasRegion = (TextureAtlas.AtlasRegion) rm.getTextureRegion(vo.imageName);
+        ninePatchComponent.ninePatch = new NinePatch(atlasRegion, atlasRegion.splits[0], atlasRegion.splits[1], atlasRegion.splits[2], atlasRegion.splits[3]);
 
-		ResolutionEntryVO resolutionEntryVO = rm.getLoadedResolution();
-		ProjectInfoVO projectInfoVO = rm.getProjectVO();
-		float multiplier = resolutionEntryVO.getMultiplier(rm.getProjectVO().originalResolution);
+        ResolutionEntryVO resolutionEntryVO = rm.getLoadedResolution();
+        ProjectInfoVO projectInfoVO = rm.getProjectVO();
+        float multiplier = resolutionEntryVO.getMultiplier(rm.getProjectVO().originalResolution);
 
-		ninePatchComponent.ninePatch.scale(multiplier/projectInfoVO.pixelToWorld, multiplier/projectInfoVO.pixelToWorld);
+        ninePatchComponent.ninePatch.scale(multiplier / projectInfoVO.pixelToWorld, multiplier / projectInfoVO.pixelToWorld);
 
-		// This seem to be redundant as "scale" method now takes care of that o_O when did libGDX change that, should look more into this.
-		//ninePatchComponent.ninePatch.setMiddleWidth(ninePatchComponent.ninePatch.getMiddleWidth()*multiplier/projectInfoVO.pixelToWorld);
-		//ninePatchComponent.ninePatch.setMiddleHeight(ninePatchComponent.ninePatch.getMiddleHeight()*multiplier/projectInfoVO.pixelToWorld);
+        // This seem to be redundant as "scale" method now takes care of that o_O when did libGDX change that, should look more into this.
+        //ninePatchComponent.ninePatch.setMiddleWidth(ninePatchComponent.ninePatch.getMiddleWidth()*multiplier/projectInfoVO.pixelToWorld);
+        //ninePatchComponent.ninePatch.setMiddleHeight(ninePatchComponent.ninePatch.getMiddleHeight()*multiplier/projectInfoVO.pixelToWorld);
 
-		ninePatchComponent.textureRegionName = vo.imageName;
-		entity.add(ninePatchComponent);
+        ninePatchComponent.textureRegionName = vo.imageName;
+        entity.add(ninePatchComponent);
 
-		return ninePatchComponent;
-	}
+        return ninePatchComponent;
+    }
 
 }

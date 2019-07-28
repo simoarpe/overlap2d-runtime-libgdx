@@ -21,15 +21,15 @@ import com.uwsoft.editor.renderer.utils.MySkin;
  * Generally is good to load all the assets that are exported from editor
  * using default settings (The paths and file structure should be exact)
  * If changed by you manually, please override this class methods in order to keep it working.
- *
+ * <p>
  * The main logic is to prepare list of resources that needs to be load for specified scenes, and then loaded.
- *
+ * <p>
  * Created by azakhary on 9/9/2014.
  */
 public class ResourceManager implements IResourceLoader, IResourceRetriever {
 
     /**
-     *  Paths (please change if different) this is the default structure exported from editor
+     * Paths (please change if different) this is the default structure exported from editor
      */
     public String packResolutionName = "orig";
 
@@ -65,7 +65,7 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
     protected HashMap<String, FileHandle> spriterAnimations = new HashMap<String, FileHandle>();
     protected HashMap<FontSizePair, BitmapFont> bitmapFonts = new HashMap<FontSizePair, BitmapFont>();
     protected HashMap<String, ShaderProgram> shaderPrograms = new HashMap<String, ShaderProgram>();
-    
+
 
     /**
      * Constructor does nothing
@@ -76,11 +76,12 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
 
     /**
      * Sets working resolution, please set before doing any loading
+     *
      * @param resolution String resolution name, default is "orig" later use resolution names created in editor
      */
     public void setWorkingResolution(String resolution) {
         ResolutionEntryVO resolutionObject = getProjectVO().getResolution(resolution);
-        if(resolutionObject != null) {
+        if (resolutionObject != null) {
             packResolutionName = resolution;
         }
     }
@@ -103,6 +104,7 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
 
     /**
      * Initializes scene by loading it's VO data object and loading all the assets needed for this particular scene only
+     *
      * @param sceneName - scene file name without ".dt" extension
      */
     public void initScene(String sceneName) {
@@ -152,7 +154,6 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
     /**
      * Creates the list of uniqe assets used in all of the scheduled scenes,
      * removes all the duplicates, and makes list of assets that are only needed.
-     *
      */
     public void prepareAssetsToLoad() {
         particleEffectNamesToLoad.clear();
@@ -174,7 +175,7 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
             String[] spriterAnimations = composite.getRecursiveSpriterAnimationList();
             String[] shaderNames = composite.getRecursiveShaderList();
             FontSizePair[] fonts = composite.getRecursiveFontList();
-            for(CompositeItemVO library : projectVO.libraryItems.values()) {
+            for (CompositeItemVO library : projectVO.libraryItems.values()) {
                 FontSizePair[] libFonts = library.composite.getRecursiveFontList();
                 Collections.addAll(fontsToLoad, libFonts);
 
@@ -247,35 +248,36 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
             spriteAnimations.put(name, animAtlas);
         }
     }
+
     @Override
     public void loadSpriterAnimations() {
-    	// empty existing ones that are not scheduled to load
-    	for (String key : spriterAnimations.keySet()) {
-    		if (!spriterAnimNamesToLoad.contains(key)) {
-    			spriterAnimations.remove(key);
-    		}
-    	}
-    	for (String name : spriterAnimNamesToLoad) {
-    		FileHandle animFile = Gdx.files.internal("orig" + File.separator + spriterAnimationsPath + File.separator + name + File.separator + name + ".scml");
-    		spriterAnimations.put(name, animFile);
-    	}
+        // empty existing ones that are not scheduled to load
+        for (String key : spriterAnimations.keySet()) {
+            if (!spriterAnimNamesToLoad.contains(key)) {
+                spriterAnimations.remove(key);
+            }
+        }
+        for (String name : spriterAnimNamesToLoad) {
+            FileHandle animFile = Gdx.files.internal("orig" + File.separator + spriterAnimationsPath + File.separator + name + File.separator + name + ".scml");
+            spriterAnimations.put(name, animFile);
+        }
     }
-    
+
 
     public void loadSpineAnimation(String name) {
         TextureAtlas animAtlas = new TextureAtlas(Gdx.files.internal(packResolutionName + File.separator + spineAnimationsPath + File.separator + name + File.separator + name + ".atlas"));
         skeletonAtlases.put(name, animAtlas);
-        skeletonJSON.put(name, Gdx.files.internal("orig"+ File.separator + spineAnimationsPath + File.separator + name + File.separator + name + ".json"));
+        skeletonJSON.put(name, Gdx.files.internal("orig" + File.separator + spineAnimationsPath + File.separator + name + File.separator + name + ".json"));
     }
-  
+
 
     @Override
     public void loadSpineAnimations() {
         // empty existing ones that are not scheduled to load
         Iterator it = skeletonAtlases.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            if(spineAnimNamesToLoad.contains(pairs.getKey())) {
+            Map.Entry pairs = (Map.Entry) it.next();
+            if (spineAnimNamesToLoad.contains(pairs.getKey())) {
                 spineAnimNamesToLoad.remove(pairs.getKey());
             } else {
                 it.remove();
@@ -285,23 +287,23 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
 
 
         for (String name : spineAnimNamesToLoad) {
-        	loadSpineAnimation(name);
+            loadSpineAnimation(name);
         }
     }
 
     @Override
     public void loadFonts() {
-    	//resolution related stuff
-    	ResolutionEntryVO curResolution = getProjectVO().getResolution(packResolutionName);
+        //resolution related stuff
+        ResolutionEntryVO curResolution = getProjectVO().getResolution(packResolutionName);
         resMultiplier = 1;
-    	if(!packResolutionName.equals("orig")) {
-    		if(curResolution.base == 0) {
+        if (!packResolutionName.equals("orig")) {
+            if (curResolution.base == 0) {
                 resMultiplier = (float) curResolution.width / (float) getProjectVO().originalResolution.width;
-    		} else{
+            } else {
                 resMultiplier = (float) curResolution.height / (float) getProjectVO().originalResolution.height;
-    		}
-    	}
-    	
+            }
+        }
+
         // empty existing ones that are not scheduled to load
         for (FontSizePair pair : bitmapFonts.keySet()) {
             if (!fontsToLoad.contains(pair)) {
@@ -350,14 +352,14 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
 
         return projectVO;
     }
-    
+
     @Override
-	public void loadShaders() {
-    	// empty existing ones that are not scheduled to load
+    public void loadShaders() {
+        // empty existing ones that are not scheduled to load
         for (String key : shaderPrograms.keySet()) {
             if (!shaderNamesToLoad.contains(key)) {
-            	shaderPrograms.get(key).dispose();
-            	shaderPrograms.remove(key);
+                shaderPrograms.get(key).dispose();
+                shaderPrograms.remove(key);
             }
         }
 
@@ -365,14 +367,12 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
             ShaderProgram shaderProgram = new ShaderProgram(Gdx.files.internal(shadersPath + File.separator + name + ".vert"), Gdx.files.internal(shadersPath + File.separator + name + ".frag"));
             shaderPrograms.put(name, shaderProgram);
         }
-	}
+    }
 
     /**
      * Following methods are for retriever interface, which is intended for runtime internal use
      * to retrieve any already loaded into memory asset for rendering
      */
-
-
 
 
     @Override
@@ -422,7 +422,7 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
 
     @Override
     public ResolutionEntryVO getLoadedResolution() {
-        if(packResolutionName.equals("orig")) {
+        if (packResolutionName.equals("orig")) {
             return getProjectVO().originalResolution;
         }
         return getProjectVO().getResolution(packResolutionName);
@@ -432,13 +432,13 @@ public class ResourceManager implements IResourceLoader, IResourceRetriever {
         mainPack.dispose();
     }
 
-	@Override
-	public FileHandle getSCMLFile(String name) {
-		return spriterAnimations.get(name);
-	}
+    @Override
+    public FileHandle getSCMLFile(String name) {
+        return spriterAnimations.get(name);
+    }
 
-	@Override
-	public ShaderProgram getShaderProgram(String shaderName) {
+    @Override
+    public ShaderProgram getShaderProgram(String shaderName) {
         return shaderPrograms.get(shaderName);
-	}
+    }
 }

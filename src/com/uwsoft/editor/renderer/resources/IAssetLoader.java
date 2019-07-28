@@ -7,10 +7,16 @@ package com.uwsoft.editor.renderer.resources;
 public interface IAssetLoader {
 
     public void loadAtlasPack();
+
     public void loadParticleEffects();
+
     public void loadSpriteAnimations();
+
     public void loadSpineAnimations();
+
     public void loadFonts();
+
     public void loadShaders();
-	void loadSpriterAnimations();
+
+    void loadSpriterAnimations();
 }

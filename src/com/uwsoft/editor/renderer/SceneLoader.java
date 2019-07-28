@@ -42,56 +42,102 @@ import com.uwsoft.editor.renderer.utils.ComponentRetriever;
  */
 public class SceneLoader {
 
-	private String curResolution = "orig";
-	private SceneVO sceneVO;
-	private IResourceRetriever rm = null;
-
     public Engine engine = null;
-	public RayHandler rayHandler;
-	public World world;
-	public Entity rootEntity;
+    public RayHandler rayHandler;
+    public World world;
+    public Entity rootEntity;
+    public EntityFactory entityFactory;
+    private String curResolution = "orig";
+    private SceneVO sceneVO;
+    private IResourceRetriever rm = null;
+    private float pixelsPerWU = 1;
 
-	public EntityFactory entityFactory;
-
-	private float pixelsPerWU = 1;
-
-	private Overlap2dRenderer renderer;
-	private Entity root;
+    private Overlap2dRenderer renderer;
+    private Entity root;
 
     public SceneLoader(World world, RayHandler rayHandler) {
         this.world = world;
         this.rayHandler = rayHandler;
-		ResourceManager rm = new ResourceManager();
+        ResourceManager rm = new ResourceManager();
         rm.initAllResources();
 
-		this.rm = rm;
+        this.rm = rm;
 
-		this.engine = new Engine();
-		initSceneLoader();
+        this.engine = new Engine();
+        initSceneLoader();
     }
 
     public SceneLoader(IResourceRetriever rm, World world, RayHandler rayHandler) {
-		this.world = world;
+        this.world = world;
         this.rayHandler = rayHandler;
         this.engine = new Engine();
-		this.rm = rm;
-		initSceneLoader();
+        this.rm = rm;
+        initSceneLoader();
     }
 
-	public SceneLoader() {
-	this(null, null);
-	}
+    public SceneLoader() {
+        this(null, null);
+    }
 
-	public SceneLoader(IResourceRetriever rm) {
-	this(rm, null, null);
-	}
+    public SceneLoader(IResourceRetriever rm) {
+        this(rm, null, null);
+    }
 
-	/**
-	 * this method is called when rm has loaded all data
-	 */
+    /**
+     * Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified.
+     */
+    static public ShaderProgram createDefaultShader() {
+        String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+                + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
+                + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
+                + "uniform mat4 u_projTrans;\n" //
+                + "varying vec4 v_color;\n" //
+                + "varying vec2 v_texCoords;\n" //
+                + "\n" //
+                + "void main()\n" //
+                + "{\n" //
+                + "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
+                + "   v_color.a = v_color.a * (255.0/254.0);\n" //
+                + "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
+                + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+                + "}\n";
+        String fragmentShader = "#ifdef GL_ES\n" //
+                + "#define LOWP lowp\n" //
+                + "precision mediump float;\n" //
+                + "#else\n" //
+                + "#define LOWP \n" //
+                + "#endif\n" //
+                + "varying LOWP vec4 v_color;\n" //
+                + "varying vec2 v_texCoords;\n" //
+                + "uniform sampler2D u_texture;\n" //
+                + "uniform vec2 atlasCoord;\n" //
+                + "uniform vec2 atlasSize;\n" //
+                + "uniform int isRepeat;\n" //
+                + "void main()\n"//
+                + "{\n" //
+                + "vec4 textureSample = vec4(0.0,0.0,0.0,0.0);\n"//
+                + "if(isRepeat == 1)\n"//
+                + "{\n"//
+                + "textureSample = v_color * texture2D(u_texture, atlasCoord+mod(v_texCoords, atlasSize));\n"//
+                + "}\n"//
+                + "else\n"//
+                + "{\n"//
+                + "textureSample = v_color * texture2D(u_texture, v_texCoords);\n"//
+                + "}\n"//
+                + "  gl_FragColor = textureSample;\n" //
+                + "}";
+
+        ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
+        if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
+        return shader;
+    }
+
+    /**
+     * this method is called when rm has loaded all data
+     */
     private void initSceneLoader() {
         if (world == null) {
-            world = new World(new Vector2(0,-10), true);
+            world = new World(new Vector2(0, -10), true);
         } else {
             PhysicsBodyLoader.getInstance().mul = 1;
         }
@@ -107,116 +153,115 @@ public class SceneLoader {
             rayHandler.setBlurNum(3);
             rayHandler.setShadows(true);
         }
-        
+
         addSystems();
         entityFactory = new EntityFactory(rayHandler, world, rm);
     }
 
-	public void setResolution(String resolutionName) {
-		ResolutionEntryVO resolution = getRm().getProjectVO().getResolution(resolutionName);
-		if(resolution != null) {
-			curResolution = resolutionName;
-		}
-	}
+    public void setResolution(String resolutionName) {
+        ResolutionEntryVO resolution = getRm().getProjectVO().getResolution(resolutionName);
+        if (resolution != null) {
+            curResolution = resolutionName;
+        }
+    }
 
+    public SceneVO getSceneVO() {
+        return sceneVO;
+    }
 
-	public SceneVO getSceneVO() {
-		return sceneVO;
-	}
+    public SceneVO loadScene(String sceneName, Viewport viewport, boolean customLight) {
 
-	public SceneVO loadScene(String sceneName, Viewport viewport, boolean customLight) {
+        // this has to be done differently.
+        engine.removeAllEntities();
+        entityFactory.clean();
 
-		// this has to be done differently.
-		engine.removeAllEntities();
-		entityFactory.clean();
+        pixelsPerWU = rm.getProjectVO().pixelToWorld;
 
-		pixelsPerWU = rm.getProjectVO().pixelToWorld;
-
-		sceneVO = rm.getSceneVO(sceneName);
-		if (sceneVO == null) {
-			throw new IllegalStateException("Loaded scene for scene name " + sceneName + " is null");
-		}
+        sceneVO = rm.getSceneVO(sceneName);
+        if (sceneVO == null) {
+            throw new IllegalStateException("Loaded scene for scene name " + sceneName + " is null");
+        }
         world.setGravity(new Vector2(sceneVO.physicsPropertiesVO.gravityX, sceneVO.physicsPropertiesVO.gravityY));
 
-		if(sceneVO.composite == null) {
-			sceneVO.composite = new CompositeVO();
-		}
-		rootEntity = entityFactory.createRootEntity(sceneVO.composite, viewport);
-		engine.addEntity(rootEntity);
+        if (sceneVO.composite == null) {
+            sceneVO.composite = new CompositeVO();
+        }
+        rootEntity = entityFactory.createRootEntity(sceneVO.composite, viewport);
+        engine.addEntity(rootEntity);
 
-		if(sceneVO.composite != null) {
-			entityFactory.initAllChildren(engine, rootEntity, sceneVO.composite);
-		}
+        if (sceneVO.composite != null) {
+            entityFactory.initAllChildren(engine, rootEntity, sceneVO.composite);
+        }
         if (!customLight) {
             setAmbienceInfo(sceneVO);
         }
-		rayHandler.useCustomViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+        rayHandler.useCustomViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
 
-		return sceneVO;
-	}
-
-    public SceneVO loadScene(String sceneName, Viewport viewport) {
-      return loadScene(sceneName, viewport, false);
+        return sceneVO;
     }
 
-	public SceneVO loadScene(String sceneName) {
-		return loadScene(sceneName, false);
-	}
+    public SceneVO loadScene(String sceneName, Viewport viewport) {
+        return loadScene(sceneName, viewport, false);
+    }
+
+    public SceneVO loadScene(String sceneName) {
+        return loadScene(sceneName, false);
+    }
 
     public SceneVO loadScene(String sceneName, boolean customLight) {
         ProjectInfoVO projectVO = rm.getProjectVO();
-        Viewport viewport = new ScalingViewport(Scaling.stretch, (float)projectVO.originalResolution.width/ pixelsPerWU, (float)projectVO.originalResolution.height/ pixelsPerWU, new OrthographicCamera());
+        Viewport viewport = new ScalingViewport(Scaling.stretch, (float) projectVO.originalResolution.width / pixelsPerWU, (float) projectVO.originalResolution.height / pixelsPerWU, new OrthographicCamera());
         return loadScene(sceneName, viewport, customLight);
     }
 
-	public void injectExternalItemType(IExternalItemType itemType) {
-		itemType.injectDependencies(rayHandler, world, rm);
-		itemType.injectMappers();
-		entityFactory.addExternalFactory(itemType);
-		engine.addSystem(itemType.getSystem());
-		renderer.addDrawableType(itemType);
-	}
+    public void injectExternalItemType(IExternalItemType itemType) {
+        itemType.injectDependencies(rayHandler, world, rm);
+        itemType.injectMappers();
+        entityFactory.addExternalFactory(itemType);
+        engine.addSystem(itemType.getSystem());
+        renderer.addDrawableType(itemType);
+    }
 
-	private void addSystems() {
+    private void addSystems() {
         PhysicsBodyLoader.getInstance().setScaleFromPPWU(pixelsPerWU);
 
-		ParticleSystem particleSystem = new ParticleSystem();
-		LightSystem lightSystem = new LightSystem();
-		SpriteAnimationSystem animationSystem = new SpriteAnimationSystem();
-		LayerSystem layerSystem = new LayerSystem();
-		PhysicsSystem physicsSystem = new PhysicsSystem(world);
-		CompositeSystem compositeSystem = new CompositeSystem();
-		LabelSystem labelSystem = new LabelSystem();
+        ParticleSystem particleSystem = new ParticleSystem();
+        LightSystem lightSystem = new LightSystem();
+        SpriteAnimationSystem animationSystem = new SpriteAnimationSystem();
+        LayerSystem layerSystem = new LayerSystem();
+        PhysicsSystem physicsSystem = new PhysicsSystem(world);
+        CompositeSystem compositeSystem = new CompositeSystem();
+        LabelSystem labelSystem = new LabelSystem();
         ScriptSystem scriptSystem = new ScriptSystem();
         ActionSystem actionSystem = new ActionSystem();
-		renderer = new Overlap2dRenderer(new PolygonSpriteBatch(2000, createDefaultShader()));
-		renderer.setRayHandler(rayHandler);
+        renderer = new Overlap2dRenderer(new PolygonSpriteBatch(2000, createDefaultShader()));
+        renderer.setRayHandler(rayHandler);
 //		renderer.setBox2dWorld(world);
-		
-		engine.addSystem(animationSystem);
-		engine.addSystem(particleSystem);
-		engine.addSystem(lightSystem);
-		engine.addSystem(layerSystem);
-		engine.addSystem(physicsSystem);
-		engine.addSystem(compositeSystem);
-		engine.addSystem(labelSystem);
+
+        engine.addSystem(animationSystem);
+        engine.addSystem(particleSystem);
+        engine.addSystem(lightSystem);
+        engine.addSystem(layerSystem);
+        engine.addSystem(physicsSystem);
+        engine.addSystem(compositeSystem);
+        engine.addSystem(labelSystem);
         engine.addSystem(scriptSystem);
         engine.addSystem(actionSystem);
-		engine.addSystem(renderer);
+        engine.addSystem(renderer);
 
         // additional
         engine.addSystem(new ButtonSystem());
 
-		addEntityRemoveListener();
-	}
+        addEntityRemoveListener();
+    }
 
-	private void addEntityRemoveListener() {
-		engine.addEntityListener(new EntityListener() {
-			@Override
-			public void entityAdded(Entity entity) {
-				// TODO: Gev knows what to do. (do this for all entities)
+    private void addEntityRemoveListener() {
+        engine.addEntityListener(new EntityListener() {
+            @Override
+            public void entityAdded(Entity entity) {
+                // TODO: Gev knows what to do. (do this for all entities)
 
-				// mae sure we assign correct z-index here
+                // mae sure we assign correct z-index here
 				/*
 				ZindexComponent zindexComponent = ComponentRetriever.get(entity, ZindexComponent.class);
 				ParentNodeComponent parentNodeComponent = ComponentRetriever.get(entity, ParentNodeComponent.class);
@@ -226,75 +271,75 @@ public class SceneLoader {
 					zindexComponent.needReOrder = false;
 				}*/
 
-				// call init for a system
-				ScriptComponent scriptComponent = entity.getComponent(ScriptComponent.class);
-				if (scriptComponent != null) {
-					for (IScript script : scriptComponent.scripts) {
-						script.init(entity);
-					}
-				}
-			}
+                // call init for a system
+                ScriptComponent scriptComponent = entity.getComponent(ScriptComponent.class);
+                if (scriptComponent != null) {
+                    for (IScript script : scriptComponent.scripts) {
+                        script.init(entity);
+                    }
+                }
+            }
 
-			@Override
-			public void entityRemoved(Entity entity) {
-				ParentNodeComponent parentComponent = ComponentRetriever.get(entity, ParentNodeComponent.class);
+            @Override
+            public void entityRemoved(Entity entity) {
+                ParentNodeComponent parentComponent = ComponentRetriever.get(entity, ParentNodeComponent.class);
 
-				if (parentComponent == null) {
-					return;
-				}
+                if (parentComponent == null) {
+                    return;
+                }
 
-				Entity parentEntity = parentComponent.parentEntity;
-				NodeComponent parentNodeComponent = ComponentRetriever.get(parentEntity, NodeComponent.class);
-				parentNodeComponent.removeChild(entity);
+                Entity parentEntity = parentComponent.parentEntity;
+                NodeComponent parentNodeComponent = ComponentRetriever.get(parentEntity, NodeComponent.class);
+                parentNodeComponent.removeChild(entity);
 
-				// check if composite and remove all children
-				NodeComponent nodeComponent = ComponentRetriever.get(entity, NodeComponent.class);
-				if (nodeComponent != null) {
-					// it is composite
-					for (Entity node : nodeComponent.children) {
-						engine.removeEntity(node);
-					}
-				}
+                // check if composite and remove all children
+                NodeComponent nodeComponent = ComponentRetriever.get(entity, NodeComponent.class);
+                if (nodeComponent != null) {
+                    // it is composite
+                    for (Entity node : nodeComponent.children) {
+                        engine.removeEntity(node);
+                    }
+                }
 
-				//check for physics
-				PhysicsBodyComponent physicsBodyComponent = ComponentRetriever.get(entity, PhysicsBodyComponent.class);
-				if (physicsBodyComponent != null && physicsBodyComponent.body != null) {
-					world.destroyBody(physicsBodyComponent.body);
-				}
+                //check for physics
+                PhysicsBodyComponent physicsBodyComponent = ComponentRetriever.get(entity, PhysicsBodyComponent.class);
+                if (physicsBodyComponent != null && physicsBodyComponent.body != null) {
+                    world.destroyBody(physicsBodyComponent.body);
+                }
 
                 // check if it is light
                 LightObjectComponent lightObjectComponent = ComponentRetriever.get(entity, LightObjectComponent.class);
-                if(lightObjectComponent != null) {
+                if (lightObjectComponent != null) {
                     lightObjectComponent.lightObject.remove(true);
                 }
-			}
-		});
-	}
+            }
+        });
+    }
 
-	public Entity loadFromLibrary(String libraryName) {
-		ProjectInfoVO projectInfoVO = getRm().getProjectVO();
-		CompositeItemVO compositeItemVO = projectInfoVO.libraryItems.get(libraryName);
+    public Entity loadFromLibrary(String libraryName) {
+        ProjectInfoVO projectInfoVO = getRm().getProjectVO();
+        CompositeItemVO compositeItemVO = projectInfoVO.libraryItems.get(libraryName);
 
-		if(compositeItemVO != null) {
-			Entity entity = entityFactory.createEntity(null, compositeItemVO);
-			return entity;
-		}
+        if (compositeItemVO != null) {
+            Entity entity = entityFactory.createEntity(null, compositeItemVO);
+            return entity;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     public CompositeItemVO loadVoFromLibrary(String libraryName) {
         ProjectInfoVO projectInfoVO = getRm().getProjectVO();
         CompositeItemVO compositeItemVO = projectInfoVO.libraryItems.get(libraryName);
 
-       return compositeItemVO;
+        return compositeItemVO;
     }
 
     public void addComponentsByTagName(String tagName, Class componentClass) {
         ImmutableArray<Entity> entities = engine.getEntities();
-        for(Entity entity: entities) {
+        for (Entity entity : entities) {
             MainItemComponent mainItemComponent = ComponentRetriever.get(entity, MainItemComponent.class);
-            if(mainItemComponent.tags.contains(tagName)) {
+            if (mainItemComponent.tags.contains(tagName)) {
                 try {
                     entity.add(ClassReflection.<Component>newInstance(componentClass));
                 } catch (ReflectionException e) {
@@ -304,87 +349,38 @@ public class SceneLoader {
         }
     }
 
-	/**
-	 * Sets ambient light to the one specified in scene from editor
-	 *
-	 * @param vo
-	 *            - Scene data file to invalidate
-	 */
-	public void setAmbienceInfo(SceneVO vo) {
-        if(!vo.lightSystemEnabled) {
+    /**
+     * Sets ambient light to the one specified in scene from editor
+     *
+     * @param vo - Scene data file to invalidate
+     */
+    public void setAmbienceInfo(SceneVO vo) {
+        if (!vo.lightSystemEnabled) {
             rayHandler.setAmbientLight(1f, 1f, 1f, 1f);
             return;
         }
-		if (vo.ambientColor != null) {
-			Color clr = new Color(vo.ambientColor[0], vo.ambientColor[1],
-					vo.ambientColor[2], vo.ambientColor[3]);
-			rayHandler.setAmbientLight(clr);
-		}
-	}
+        if (vo.ambientColor != null) {
+            Color clr = new Color(vo.ambientColor[0], vo.ambientColor[1],
+                    vo.ambientColor[2], vo.ambientColor[3]);
+            rayHandler.setAmbientLight(clr);
+        }
+    }
 
+    public EntityFactory getEntityFactory() {
+        return entityFactory;
+    }
 
-	public EntityFactory getEntityFactory() {
-		return entityFactory;
-	}
-
-	 public IResourceRetriever getRm() {
-	 	return rm;
-	 }
+    public IResourceRetriever getRm() {
+        return rm;
+    }
 
     public Engine getEngine() {
         return engine;
     }
 
-	public Entity getRoot() {
-		return rootEntity;
-	}
-	
-	/** Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified. */
-	static public ShaderProgram createDefaultShader () {
-		String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-			+ "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-			+ "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-			+ "uniform mat4 u_projTrans;\n" //
-			+ "varying vec4 v_color;\n" //
-			+ "varying vec2 v_texCoords;\n" //
-			+ "\n" //
-			+ "void main()\n" //
-			+ "{\n" //
-			+ "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-			+ "   v_color.a = v_color.a * (255.0/254.0);\n" //
-			+ "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-			+ "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-			+ "}\n";
-		String fragmentShader = "#ifdef GL_ES\n" //
-			+ "#define LOWP lowp\n" //
-			+ "precision mediump float;\n" //
-			+ "#else\n" //
-			+ "#define LOWP \n" //
-			+ "#endif\n" //
-			+ "varying LOWP vec4 v_color;\n" //
-			+ "varying vec2 v_texCoords;\n" //
-			+ "uniform sampler2D u_texture;\n" //
-			+ "uniform vec2 atlasCoord;\n" //
-			+ "uniform vec2 atlasSize;\n" //
-			+ "uniform int isRepeat;\n" //
-			+ "void main()\n"//
-			+ "{\n" //
-			+ "vec4 textureSample = vec4(0.0,0.0,0.0,0.0);\n"//
-			+ "if(isRepeat == 1)\n"//
-			+ "{\n"//
-			+ "textureSample = v_color * texture2D(u_texture, atlasCoord+mod(v_texCoords, atlasSize));\n"//
-			+ "}\n"//
-			+ "else\n"//
-			+ "{\n"//
-			+ "textureSample = v_color * texture2D(u_texture, v_texCoords);\n"//
-			+ "}\n"//
-			+ "  gl_FragColor = textureSample;\n" //
-			+ "}";
-
-		ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
-		if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
-		return shader;
-	}
+    public Entity getRoot() {
+        return rootEntity;
+    }
 
     public Batch getBatch() {
         return renderer.getBatch();

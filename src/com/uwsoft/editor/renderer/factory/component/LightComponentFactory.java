@@ -63,7 +63,7 @@ public class LightComponentFactory extends ComponentFactory {
     }
 
     protected LightObjectComponent createLightObjectComponent(Entity entity, LightVO vo) {
-        if(vo.softnessLength == -1f) {
+        if (vo.softnessLength == -1f) {
             vo.softnessLength = vo.distance * 0.1f * PhysicsBodyLoader.getScale();
         }
         LightObjectComponent component = new LightObjectComponent(vo.type);
@@ -80,7 +80,7 @@ public class LightComponentFactory extends ComponentFactory {
         } else {
             component.lightObject = new ConeLight(rayHandler, component.rays, Color.WHITE, 1, 0, 0, 0, 0);
         }
-        
+
         component.lightObject.setSoftnessLength(component.softnessLength);
 
         entity.add(component);

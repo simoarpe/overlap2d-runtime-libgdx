@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Interpolation;
 /**
  * Created by ZeppLondon on 10/28/15.
  */
-public class SizeToData extends TemporalData{
+public class SizeToData extends TemporalData {
     public float startWidth, startHeight;
     public float endWidth, endHeight;
 

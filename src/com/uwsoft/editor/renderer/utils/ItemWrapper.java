@@ -46,7 +46,7 @@ public class ItemWrapper {
     public ItemWrapper(Entity entity) {
         this.entity = entity;
         nodeComponent = ComponentRetriever.get(entity, NodeComponent.class);
-        if(nodeComponent != null) {
+        if (nodeComponent != null) {
             for (Entity child : nodeComponent.children) {
                 MainItemComponent mainItemComponent = ComponentRetriever.get(child, MainItemComponent.class);
                 childMap.put(mainItemComponent.itemIdentifier, child);
@@ -56,7 +56,7 @@ public class ItemWrapper {
 
     public ItemWrapper getChild(String id) {
         Entity entity = childMap.get(id);
-        if(entity == null) return new ItemWrapper();
+        if (entity == null) return new ItemWrapper();
 
         return new ItemWrapper(entity);
     }
@@ -66,12 +66,12 @@ public class ItemWrapper {
     }
 
     public ItemWrapper addChild(Entity child) {
-        if(nodeComponent != null) {
+        if (nodeComponent != null) {
             ParentNodeComponent parentNodeComponent = child.getComponent(ParentNodeComponent.class);
             parentNodeComponent.parentEntity = entity;
             nodeComponent.children.add(child);
 
-            return  new ItemWrapper(child);
+            return new ItemWrapper(child);
         }
 
         return new ItemWrapper();
@@ -90,7 +90,7 @@ public class ItemWrapper {
         if (entity == null) throw new NullEntityException("Entity for script " + script.getClass() + " was null.");
 
         ScriptComponent component = ComponentRetriever.get(entity, ScriptComponent.class);
-        if(component == null) {
+        if (component == null) {
             component = new ScriptComponent();
             entity.add(component);
         }

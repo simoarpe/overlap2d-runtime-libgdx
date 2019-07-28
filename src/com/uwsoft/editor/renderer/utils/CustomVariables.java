@@ -17,9 +17,9 @@ public class CustomVariables {
     public void loadFromString(String varString) {
         variables.clear();
         String[] vars = varString.split(";");
-        for(int i = 0; i < vars.length; i++) {
+        for (int i = 0; i < vars.length; i++) {
             String[] tmp = vars[i].split(":");
-            if(tmp.length > 1) {
+            if (tmp.length > 1) {
                 setVariable(tmp[0], tmp[1]);
             }
         }
@@ -32,8 +32,8 @@ public class CustomVariables {
             String value = entry.getValue();
             result += key + ":" + value + ";";
         }
-        if(result.length() > 0) {
-            result = result.substring(0, result.length()-1);
+        if (result.length() > 0) {
+            result = result.substring(0, result.length() - 1);
         }
 
         return result;
@@ -55,7 +55,8 @@ public class CustomVariables {
         Integer result = null;
         try {
             result = Integer.parseInt(variables.get(key));
-        } catch(Exception e) {}
+        } catch (Exception e) {
+        }
 
         return result;
     }
@@ -64,7 +65,8 @@ public class CustomVariables {
         Float result = null;
         try {
             result = Float.parseFloat(variables.get(key));
-        } catch(Exception e) {}
+        } catch (Exception e) {
+        }
 
         return result;
     }

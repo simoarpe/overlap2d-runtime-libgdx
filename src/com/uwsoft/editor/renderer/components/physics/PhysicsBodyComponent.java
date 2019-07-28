@@ -6,22 +6,22 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Filter;
 
 public class PhysicsBodyComponent implements Component {
-	public int bodyType;
+    public int bodyType;
 
-	public float mass;
-	public Vector2 centerOfMass;
-	public float rotationalInertia;
-	public float damping;
-	public float gravityScale;
+    public float mass;
+    public Vector2 centerOfMass;
+    public float rotationalInertia;
+    public float damping;
+    public float gravityScale;
 
-	public boolean allowSleep;
-	public boolean awake;
-	public boolean bullet;
+    public boolean allowSleep;
+    public boolean awake;
+    public boolean bullet;
     public boolean sensor;
 
-	public float density;
-	public float friction;
-	public float restitution;
+    public float density;
+    public float friction;
+    public float restitution;
     public Filter filter;
 
     public float centerX;

@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Interpolation;
 /**
  * Created by ZeppLondon on 10/15/2015.
  */
-public class TemporalData extends ActionData{
+public class TemporalData extends ActionData {
     public float duration;
     public float passedTime;
     public boolean began;

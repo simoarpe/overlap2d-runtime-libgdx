@@ -13,12 +13,6 @@ public class ButtonComponent implements Component {
 
     private Array<ButtonListener> listeners = new Array<ButtonListener>();
 
-    public interface ButtonListener {
-        public void touchUp();
-        public void touchDown();
-        public void clicked();
-    }
-
     public void addListener(ButtonListener listener) {
         listeners.add(listener);
     }
@@ -32,17 +26,25 @@ public class ButtonComponent implements Component {
     }
 
     public void setTouchState(boolean isTouched) {
-        if(!this.isTouched && isTouched) {
-            for(int i = 0; i < listeners.size; i++) {
+        if (!this.isTouched && isTouched) {
+            for (int i = 0; i < listeners.size; i++) {
                 listeners.get(i).touchDown();
             }
         }
-        if(this.isTouched && !isTouched) {
-            for(int i = 0; i < listeners.size; i++) {
+        if (this.isTouched && !isTouched) {
+            for (int i = 0; i < listeners.size; i++) {
                 listeners.get(i).touchUp();
                 listeners.get(i).clicked();
             }
         }
         this.isTouched = isTouched;
+    }
+
+    public interface ButtonListener {
+        public void touchUp();
+
+        public void touchDown();
+
+        public void clicked();
     }
 }

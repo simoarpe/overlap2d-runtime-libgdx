@@ -18,80 +18,79 @@ import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 
 public class PhysicsSystem extends IteratingSystem {
 
-	protected ComponentMapper<TransformComponent> transformComponentMapper = ComponentMapper.getFor(TransformComponent.class);
+    private final float TIME_STEP = 1f / 60;
+    protected ComponentMapper<TransformComponent> transformComponentMapper = ComponentMapper.getFor(TransformComponent.class);
+    private World world;
+    private boolean isPhysicsOn = true;
+    private float accumulator = 0;
 
-	private final float TIME_STEP = 1f/60;
-	private World world;
-	private boolean isPhysicsOn = true;
-	private float accumulator = 0;
+    public PhysicsSystem(World world) {
+        super(Family.all(PhysicsBodyComponent.class).get());
+        this.world = world;
+    }
 
-	public PhysicsSystem(World world) {
-		super(Family.all(PhysicsBodyComponent.class).get());
-		this.world = world;
-	}
+    @Override
+    public void update(float deltaTime) {
+        for (int i = 0; i < getEntities().size(); ++i) {
+            processEntity(getEntities().get(i), deltaTime);
+        }
 
-	@Override
-	public void update (float deltaTime) {
-		for (int i = 0; i < getEntities().size(); ++i) {
-			processEntity(getEntities().get(i), deltaTime);
-		}
+        if (world != null && isPhysicsOn) {
+            doPhysicsStep(deltaTime);
+        }
+    }
 
-		if (world != null && isPhysicsOn) {
-			doPhysicsStep(deltaTime);
-		}
-	}
+    @Override
+    protected void processEntity(Entity entity, float deltaTime) {
+        TransformComponent transformComponent = transformComponentMapper.get(entity);
 
-	@Override
-	protected void processEntity(Entity entity, float deltaTime) {
-		TransformComponent transformComponent =  transformComponentMapper.get(entity);
+        processBody(entity);
 
-		processBody(entity);
+        PhysicsBodyComponent physicsBodyComponent = ComponentRetriever.get(entity, PhysicsBodyComponent.class);
+        Body body = physicsBodyComponent.body;
+        transformComponent.x = body.getPosition().x / PhysicsBodyLoader.getScale() - transformComponent.originX;
+        transformComponent.y = body.getPosition().y / PhysicsBodyLoader.getScale() - transformComponent.originY;
+        transformComponent.rotation = body.getAngle() * MathUtils.radiansToDegrees;
+    }
 
-		PhysicsBodyComponent physicsBodyComponent = ComponentRetriever.get(entity, PhysicsBodyComponent.class);
-		Body body = physicsBodyComponent.body;
-		transformComponent.x = body.getPosition().x / PhysicsBodyLoader.getScale() - transformComponent.originX;
-		transformComponent.y = body.getPosition().y / PhysicsBodyLoader.getScale() - transformComponent.originY;
-		transformComponent.rotation = body.getAngle() * MathUtils.radiansToDegrees;
-	}
-
-	protected void processBody(Entity entity) {
-		PhysicsBodyComponent physicsBodyComponent = ComponentRetriever.get(entity, PhysicsBodyComponent.class);
-		PolygonComponent polygonComponent = ComponentRetriever.get(entity, PolygonComponent.class);
+    protected void processBody(Entity entity) {
+        PhysicsBodyComponent physicsBodyComponent = ComponentRetriever.get(entity, PhysicsBodyComponent.class);
+        PolygonComponent polygonComponent = ComponentRetriever.get(entity, PolygonComponent.class);
         TransformComponent transformComponent = ComponentRetriever.get(entity, TransformComponent.class);
 
-		if(polygonComponent == null && physicsBodyComponent.body != null) {
-			world.destroyBody(physicsBodyComponent.body);
-			physicsBodyComponent.body = null;
-		}
+        if (polygonComponent == null && physicsBodyComponent.body != null) {
+            world.destroyBody(physicsBodyComponent.body);
+            physicsBodyComponent.body = null;
+        }
 
-		if(physicsBodyComponent.body == null && polygonComponent != null) {
-			if(polygonComponent.vertices == null) return;
+        if (physicsBodyComponent.body == null && polygonComponent != null) {
+            if (polygonComponent.vertices == null) return;
 
             DimensionsComponent dimensionsComponent = ComponentRetriever.get(entity, DimensionsComponent.class);
 
-            physicsBodyComponent.centerX = dimensionsComponent.width/2;
-            physicsBodyComponent.centerY = dimensionsComponent.height/2;
+            physicsBodyComponent.centerX = dimensionsComponent.width / 2;
+            physicsBodyComponent.centerY = dimensionsComponent.height / 2;
 
-			PhysicsBodyComponent bodyPropertiesComponent = ComponentRetriever.get(entity, PhysicsBodyComponent.class);
-			physicsBodyComponent.body = PhysicsBodyLoader.getInstance().createBody(world, bodyPropertiesComponent, polygonComponent.vertices, transformComponent);
+            PhysicsBodyComponent bodyPropertiesComponent = ComponentRetriever.get(entity, PhysicsBodyComponent.class);
+            physicsBodyComponent.body = PhysicsBodyLoader.getInstance().createBody(world, bodyPropertiesComponent, polygonComponent.vertices, transformComponent);
 
-			physicsBodyComponent.body.setUserData(entity);
-		}
-	}
+            physicsBodyComponent.body.setUserData(entity);
+        }
+    }
 
-	private void doPhysicsStep(float deltaTime) {
-		// fixed time step
-		// max frame time to avoid spiral of death (on slow devices)
-		float frameTime = Math.min(deltaTime, 0.25f);
-		accumulator += frameTime;
-		while (accumulator >= TIME_STEP) {
-			world.step(TIME_STEP, 6, 2);
-			accumulator -= TIME_STEP;
-		}
-	}
+    private void doPhysicsStep(float deltaTime) {
+        // fixed time step
+        // max frame time to avoid spiral of death (on slow devices)
+        float frameTime = Math.min(deltaTime, 0.25f);
+        accumulator += frameTime;
+        while (accumulator >= TIME_STEP) {
+            world.step(TIME_STEP, 6, 2);
+            accumulator -= TIME_STEP;
+        }
+    }
 
-	public void setPhysicsOn(boolean isPhysicsOn) {
-		this.isPhysicsOn = isPhysicsOn;
-	}
+    public void setPhysicsOn(boolean isPhysicsOn) {
+        this.isPhysicsOn = isPhysicsOn;
+    }
 
 }

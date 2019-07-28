@@ -8,26 +8,26 @@ import com.uwsoft.editor.renderer.factory.EntityFactory;
 
 public class DrawableLogicMapper {
 
-	private HashMap<Integer, Drawable> logicClassMap;
+    private HashMap<Integer, Drawable> logicClassMap;
 
-	public DrawableLogicMapper() {
-		logicClassMap = new HashMap<Integer, Drawable>(6);
-		logicClassMap.put(EntityFactory.IMAGE_TYPE, 	new TexturRegionDrawLogic());
-		logicClassMap.put(EntityFactory.LABEL_TYPE, 	new LabelDrawableLogic());
-		logicClassMap.put(EntityFactory.NINE_PATCH, 	new NinePatchDrawableLogic());
-		logicClassMap.put(EntityFactory.PARTICLE_TYPE, 	new ParticleDrawableLogic());
-		logicClassMap.put(EntityFactory.SPRITE_TYPE, 	new SpriteDrawableLogic());
-		logicClassMap.put(EntityFactory.SPRITER_TYPE, 	new SpriterDrawableLogic());
-		logicClassMap.put(EntityFactory.COLOR_PRIMITIVE,new TexturRegionDrawLogic());
+    public DrawableLogicMapper() {
+        logicClassMap = new HashMap<Integer, Drawable>(6);
+        logicClassMap.put(EntityFactory.IMAGE_TYPE, new TexturRegionDrawLogic());
+        logicClassMap.put(EntityFactory.LABEL_TYPE, new LabelDrawableLogic());
+        logicClassMap.put(EntityFactory.NINE_PATCH, new NinePatchDrawableLogic());
+        logicClassMap.put(EntityFactory.PARTICLE_TYPE, new ParticleDrawableLogic());
+        logicClassMap.put(EntityFactory.SPRITE_TYPE, new SpriteDrawableLogic());
+        logicClassMap.put(EntityFactory.SPRITER_TYPE, new SpriterDrawableLogic());
+        logicClassMap.put(EntityFactory.COLOR_PRIMITIVE, new TexturRegionDrawLogic());
 
-		logicClassMap.put(EntityFactory.LIGHT_TYPE, new LightDrawableLogic());
-	}
+        logicClassMap.put(EntityFactory.LIGHT_TYPE, new LightDrawableLogic());
+    }
 
-	public void addDrawableToMap(int type, Drawable drawable) {
-		logicClassMap.put(type, drawable);
-	}
+    public void addDrawableToMap(int type, Drawable drawable) {
+        logicClassMap.put(type, drawable);
+    }
 
-	public Drawable getDrawable(int type){
-		return logicClassMap.get(type);
-	}
+    public Drawable getDrawable(int type) {
+        return logicClassMap.get(type);
+    }
 }

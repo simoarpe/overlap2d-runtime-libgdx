@@ -42,7 +42,7 @@ public class PolygonComponent implements Component {
     {
         Vector2[] points = new Vector2[4];
         points[0] = new Vector2(x, y);
-        points[1] = new Vector2(x, y+height);
+        points[1] = new Vector2(x, y + height);
         points[2] = new Vector2(x + width, y + height);
         points[3] = new Vector2(x + width, y);
 

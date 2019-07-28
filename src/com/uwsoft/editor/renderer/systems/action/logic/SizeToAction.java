@@ -8,7 +8,7 @@ import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 /**
  * Created by ZeppLondon on 10/28/15.
  */
-public class SizeToAction <T extends SizeToData> extends TemporalAction<T>  {
+public class SizeToAction<T extends SizeToData> extends TemporalAction<T> {
     @Override
     protected void update(float percent, Entity entity, T actionData) {
         DimensionsComponent dimensionsComponent = ComponentRetriever.get(entity, DimensionsComponent.class);

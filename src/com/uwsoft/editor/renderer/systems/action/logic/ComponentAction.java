@@ -12,8 +12,7 @@ public abstract class ComponentAction<T extends ComponentData> extends DelegateA
     public boolean act(float delta, Entity entity, T actionData) {
         if (actionData.linkedComponentMapper == null || actionData.linkedComponentMapper.has(entity)) {
             return delegate(delta, entity, actionData);
-        }
-        else {
+        } else {
             return true;
         }
     }

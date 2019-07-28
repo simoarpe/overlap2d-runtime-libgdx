@@ -5,12 +5,12 @@ import com.uwsoft.editor.renderer.components.spriter.SpriterComponent;
 
 public class SpriterVO extends MainItemVO {
 
-    public int 	entity;
-    public int 	animation;
+    public int entity;
+    public int animation;
     public String animationName = "";
 
     //wtf is this?
-    public float scale	=	1f;
+    public float scale = 1f;
 
     public SpriterVO() {
 
@@ -18,10 +18,10 @@ public class SpriterVO extends MainItemVO {
 
     public SpriterVO(SpriterVO vo) {
         super(vo);
-        entity 			= vo.entity;
-        animation		= vo.animation;
-        animationName 	= vo.animationName;
-        scale 			= vo.scale;
+        entity = vo.entity;
+        animation = vo.animation;
+        animationName = vo.animationName;
+        scale = vo.scale;
     }
 
     @Override

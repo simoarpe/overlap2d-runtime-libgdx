@@ -30,7 +30,7 @@ public abstract class TemporalAction<T extends TemporalData> extends ActionLogic
         return actionData.complete;
     }
 
-    abstract protected void update (float percent, Entity entity, T actionData);
+    abstract protected void update(float percent, Entity entity, T actionData);
 
     public void begin(Entity entity, T actionData) {
 
