@@ -1,0 +1,4 @@
+rootProject.name = 'overlap2d-runtime-libgdx'
+
+include ':box2dLights'
+project(':box2dLights').projectDir = new File(settingsDir, 'box2dLights')
