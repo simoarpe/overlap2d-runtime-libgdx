@@ -1,4 +1,4 @@
-package shaders;
+package box2dLight.shader;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
