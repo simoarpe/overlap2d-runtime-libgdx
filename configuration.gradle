@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- *  * Copyright 2015-2019 See AUTHORS file.
+ *  * Copyright 2019 See AUTHORS file.
  *  *
  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  * you may not use this file except in compliance with the License.
@@ -16,11 +16,15 @@
  *  *****************************************************************************
  */
 
-apply plugin: "java"
-
-sourceSets.main.java.srcDirs = ["src/main/java"]
-
-dependencies {
-    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-    compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
+ext {
+    gdxVersion = '1.9.3'
+    // box2dlightsVersion = '1.4'
+    ashleyVersion = '1.7.0'
 }
+
+repositories {
+    jcenter()
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+

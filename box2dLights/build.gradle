@@ -1,27 +1,11 @@
 apply plugin: "java"
 
-sourceCompatibility = 1.7
+apply from: "../configuration.gradle"
+
 sourceSets.main.java.srcDirs = ["src/main/java"]
 sourceSets.test.java.srcDirs = ["src/test/java"]
-
-ext {
-    gdxVersion = '1.9.3'
-//    box2dlightsVersion = '1.4'
-//    ashleyVersion = '1.7.0'
-}
 
 dependencies {
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-//    compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-//    compile "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
-//    compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
-}
-
-repositories {
-    jcenter()
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
 }
