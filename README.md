@@ -13,7 +13,7 @@ Overlap2DX runtime is based on [Ashley](https://github.com/libgdx/ashley) entity
 
 Otherwise clone this project, and include it in your project.
 
-*Important* Make sure you also have libGDX, and free type fonts library in your dependencies.
+**Important:** Make sure you also have libGDX, and free type fonts library in your dependencies.
 
 When creating new project, why not use libGDX setup app? Here are the instructions:
 https://libgdx.badlogicgames.com/download.html
