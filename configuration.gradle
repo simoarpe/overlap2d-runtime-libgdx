@@ -17,7 +17,7 @@
  */
 
 ext {
-    gdxVersion = '1.9.3'
+    gdxVersion = '1.9.4'
     // box2dlightsVersion = '1.4'
     ashleyVersion = '1.7.0'
 }
