@@ -1,3 +1,5 @@
+# Ignore Spine runtimes copied over libs folder
+libs/spine-runtime-libgdx-*.jar
 
 # Initially created and later modified by https://www.gitignore.io/api/intellij+iml,java,gwt,android,eclipse,netbeans,gradle,macos
 .idea/
