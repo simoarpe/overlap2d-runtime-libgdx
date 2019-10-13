@@ -20,6 +20,7 @@ public class PhysicsSystem extends IteratingSystem {
 
     private final float TIME_STEP = 1f / 60;
     protected ComponentMapper<TransformComponent> transformComponentMapper = ComponentMapper.getFor(TransformComponent.class);
+    protected ComponentMapper<PhysicsBodyComponent> physicsBodyComponentMapper = ComponentMapper.getFor(PhysicsBodyComponent.class);
     private World world;
     private boolean isPhysicsOn = true;
     private float accumulator = 0;
@@ -43,10 +44,13 @@ public class PhysicsSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         TransformComponent transformComponent = transformComponentMapper.get(entity);
-
+        PhysicsBodyComponent physicsBodyComponent = physicsBodyComponentMapper.get(entity);
+        if (physicsBodyComponent.body != null && physicsBodyComponent.enabled != physicsBodyComponent.body.isActive()) {
+            physicsBodyComponent.body.setActive(physicsBodyComponent.enabled);
+        }
         processBody(entity);
 
-        PhysicsBodyComponent physicsBodyComponent = ComponentRetriever.get(entity, PhysicsBodyComponent.class);
+
         Body body = physicsBodyComponent.body;
         transformComponent.x = body.getPosition().x / PhysicsBodyLoader.getScale() - transformComponent.originX;
         transformComponent.y = body.getPosition().y / PhysicsBodyLoader.getScale() - transformComponent.originY;

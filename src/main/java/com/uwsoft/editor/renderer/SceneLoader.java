@@ -1,6 +1,6 @@
 package com.uwsoft.editor.renderer;
 
-import box2dLight.RayHandler;
+import com.box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Engine;
@@ -49,7 +49,7 @@ public class SceneLoader {
     public EntityFactory entityFactory;
     private String curResolution = "orig";
     private SceneVO sceneVO;
-    private IResourceRetriever rm = null;
+    private IResourceRetriever rm;
     private float pixelsPerWU = 1;
 
     private Overlap2dRenderer renderer;
@@ -215,6 +215,9 @@ public class SceneLoader {
     }
 
     public void injectExternalItemType(IExternalItemType itemType) {
+        if (itemType.getTypeId() == EntityFactory.DUMMY_TYPE) {
+            return;
+        }
         itemType.injectDependencies(rayHandler, world, rm);
         itemType.injectMappers();
         entityFactory.addExternalFactory(itemType);
@@ -339,11 +342,13 @@ public class SceneLoader {
         ImmutableArray<Entity> entities = engine.getEntities();
         for (Entity entity : entities) {
             MainItemComponent mainItemComponent = ComponentRetriever.get(entity, MainItemComponent.class);
-            if (mainItemComponent.tags.contains(tagName)) {
-                try {
-                    entity.add(ClassReflection.<Component>newInstance(componentClass));
-                } catch (ReflectionException e) {
-                    e.printStackTrace();
+            if (mainItemComponent != null) {
+                if (mainItemComponent.tags.contains(tagName)) {
+                    try {
+                        entity.add(ClassReflection.<Component>newInstance(componentClass));
+                    } catch (ReflectionException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

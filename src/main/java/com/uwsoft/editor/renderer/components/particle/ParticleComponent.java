@@ -6,21 +6,21 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 public class ParticleComponent implements Component {
     public String particleName = "";
     public ParticleEffect particleEffect;
-    public float worldMultiplyer = 1f;
-    private float scaleFactor = 1f;
+    public float worldMultiplier = 1f;
+    private float scaleFactor = -1f;
 
     public void scaleEffect(float scale) {
+        if (scale == scaleFactor) {
+            // There is no need to re-apply the scale factor if it's the same.
+            return;
+        }
+
         scaleFactor = scale;
-        particleEffect.scaleEffect(scaleFactor * worldMultiplyer);
+        particleEffect.reset(true);
+        particleEffect.scaleEffect(scaleFactor * worldMultiplier);
     }
 
     public float getScaleFactor() {
         return scaleFactor;
-    }
-
-    //please use this method to start effects for the scale to be applied
-    public void startEffect() {
-        scaleEffect(scaleFactor);
-        particleEffect.start();
     }
 }

@@ -17,7 +17,6 @@
  */
 
 apply plugin: "java"
-apply from: 'publish.gradle'
 
 apply from: "configuration.gradle"
 
@@ -28,7 +27,22 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-    // compile "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
-    compile project(":box2dLights")
     compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
+     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+// Let's do the magic for the Spine extension check.
+boolean spineFound = false
+configurations.compile.resolve().each { file ->
+    if (file.name.contains('spine-runtime-libgdx')) {
+        spineFound = true
+    }
+}
+
+if (spineFound) {
+    // Include Spine extension.
+    sourceSets.main.java.srcDir "src/spine-extension"
+} else {
+    // Include dummy classes for Spine.
+    sourceSets.main.java.srcDir "src/spine-dummy"
 }

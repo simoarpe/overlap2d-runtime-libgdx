@@ -18,7 +18,7 @@
 
 package com.uwsoft.editor.renderer.factory.component;
 
-import box2dLight.RayHandler;
+import com.box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Rectangle;
@@ -28,7 +28,6 @@ import com.uwsoft.editor.renderer.components.DimensionsComponent;
 import com.uwsoft.editor.renderer.components.LayerMapComponent;
 import com.uwsoft.editor.renderer.components.NodeComponent;
 import com.uwsoft.editor.renderer.data.CompositeItemVO;
-import com.uwsoft.editor.renderer.data.CompositeVO;
 import com.uwsoft.editor.renderer.data.LayerItemVO;
 import com.uwsoft.editor.renderer.data.MainItemVO;
 import com.uwsoft.editor.renderer.factory.EntityFactory;

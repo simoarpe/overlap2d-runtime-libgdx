@@ -18,7 +18,7 @@
 
 package com.uwsoft.editor.renderer.commons;
 
-import box2dLight.RayHandler;
+import com.box2dLight.RayHandler;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.physics.box2d.World;
 import com.uwsoft.editor.renderer.factory.component.ComponentFactory;

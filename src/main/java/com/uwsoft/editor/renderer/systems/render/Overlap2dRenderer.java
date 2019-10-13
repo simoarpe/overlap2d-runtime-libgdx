@@ -1,6 +1,6 @@
 package com.uwsoft.editor.renderer.systems.render;
 
-import box2dLight.RayHandler;
+import com.box2dLight.RayHandler;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.physics.box2d.World;
 import com.uwsoft.editor.renderer.commons.IExternalItemType;
 import com.uwsoft.editor.renderer.components.*;
 import com.uwsoft.editor.renderer.physics.PhysicsBodyLoader;

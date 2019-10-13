@@ -16,7 +16,7 @@ public class ParticleEffectVO extends MainItemVO {
 
     public ParticleEffectVO(ParticleEffectVO vo) {
         super(vo);
-        particleName = new String(vo.particleName);
+        particleName = vo.particleName;
     }
 
     @Override

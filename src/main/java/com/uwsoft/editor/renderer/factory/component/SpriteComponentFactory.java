@@ -18,13 +18,12 @@
 
 package com.uwsoft.editor.renderer.factory.component;
 
-import box2dLight.RayHandler;
+import com.box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.uwsoft.editor.renderer.SceneLoader;
 import com.uwsoft.editor.renderer.components.DimensionsComponent;
 import com.uwsoft.editor.renderer.components.TextureRegionComponent;
 import com.uwsoft.editor.renderer.components.sprite.AnimationComponent;
@@ -34,12 +33,7 @@ import com.uwsoft.editor.renderer.data.*;
 import com.uwsoft.editor.renderer.factory.EntityFactory;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by azakhary on 5/22/2015.

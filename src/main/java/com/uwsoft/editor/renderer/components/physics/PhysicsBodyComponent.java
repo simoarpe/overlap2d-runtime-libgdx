@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Filter;
 
 public class PhysicsBodyComponent implements Component {
+    public boolean enabled;
     public int bodyType;
 
     public float mass;
@@ -31,6 +32,7 @@ public class PhysicsBodyComponent implements Component {
 
     public PhysicsBodyComponent() {
         // putting default values
+        enabled = true;
         bodyType = 0;
         mass = 1;
         centerOfMass = new Vector2(0, 0);

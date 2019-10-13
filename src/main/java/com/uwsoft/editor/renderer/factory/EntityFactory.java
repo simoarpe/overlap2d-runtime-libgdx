@@ -1,8 +1,7 @@
 package com.uwsoft.editor.renderer.factory;
 
-import box2dLight.RayHandler;
+import com.box2dLight.RayHandler;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.uwsoft.editor.renderer.commons.IExternalItemType;
-import com.uwsoft.editor.renderer.components.CompositeTransformComponent;
 import com.uwsoft.editor.renderer.components.MainItemComponent;
 import com.uwsoft.editor.renderer.components.TransformComponent;
 import com.uwsoft.editor.renderer.components.ViewPortComponent;
@@ -19,12 +17,12 @@ import com.uwsoft.editor.renderer.factory.component.*;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
 public class EntityFactory {
 
+    public static final int DUMMY_TYPE = -1;
     public static final int IMAGE_TYPE = 1;
     public static final int LABEL_TYPE = 2;
     public static final int SPRITE_TYPE = 3;

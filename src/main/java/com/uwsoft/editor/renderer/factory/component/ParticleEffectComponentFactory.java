@@ -18,7 +18,7 @@
 
 package com.uwsoft.editor.renderer.factory.component;
 
-import box2dLight.RayHandler;
+import com.box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Rectangle;
@@ -67,8 +67,8 @@ public class ParticleEffectComponentFactory extends ComponentFactory {
         ParticleEffect particleEffect = new ParticleEffect(rm.getParticleEffect(vo.particleName));
         component.particleEffect = particleEffect;
         ProjectInfoVO projectInfoVO = rm.getProjectVO();
-        component.worldMultiplyer = 1f / projectInfoVO.pixelToWorld;
-        component.scaleEffect(1f);
+        component.worldMultiplier = 1f / projectInfoVO.pixelToWorld;
+        component.scaleEffect(vo.scaleX);
 
         entity.add(component);
         return component;
